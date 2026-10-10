@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon DPS Mécafree</title>
+<style>
+  :root { --bg: #f7f6f3; --surface: #ffffff; --text: #1f2328; --muted: #5f6670; --border: #e1e0dc;
+          --accent: #b8860b; --good: #1f7a4d; --bad: #b23b2e; --warn: #9a6400; --row: #faf9f7; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #16171a; --surface: #1f2125; --text: #e6e6e3; --muted: #9ba1a8; --border: #33363c;
+            --accent: #e3b341; --good: #5cc48f; --bad: #ef7a6c; --warn: #e0b04f; --row: #23252a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; }
+  h2 { font-size: 1.35rem; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.08rem; margin: 26px 0 8px; }
+  a { color: var(--accent); }
+  .meta { color: var(--muted); margin: 0 0 20px; font-size: .95rem; }
+  .lead { background: var(--surface); border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 6px; }
+  .lead ul { margin: 6px 0 0; padding-left: 20px; }
+  .note { color: var(--muted); font-size: .92rem; }
+  .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+  th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; vertical-align: top; }
+  td.wrap { white-space: normal; min-width: 240px; }
+  th { background: var(--row); font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .ok { color: var(--good); font-weight: 600; } .mid { color: var(--warn); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; } .muted { color: var(--muted); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  td details { background: none; border: 0; padding: 0; margin: 4px 0 0; }
+  td summary { font-weight: 400; color: var(--muted); font-size: .9rem; }
+  td details p { margin: 4px 0; max-width: 46em; }
+  .faire { display: block; margin-top: 2px; }
+</style>
+</head>
+<body>
+<main>
+<style>
+  main { max-width: 1100px; }
+  .cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+  .carte { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .carte .val { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .carte .lib { color: var(--muted); font-size: .85rem; }
+  .prio { list-style: none; padding: 0; margin: 0; counter-reset: p; }
+  .prio > li { counter-increment: p; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+               padding: 14px 16px 12px 56px; margin: 12px 0; position: relative; }
+  .prio > li::before { content: counter(p); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px;
+                       border-radius: 50%; background: var(--accent); color: var(--surface); font-weight: 700;
+                       display: flex; align-items: center; justify-content: center; }
+  .prio h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .gain { float: right; margin-left: 10px; background: var(--row); border: 1px solid var(--border); border-radius: 999px;
+          padding: 2px 10px; font-size: .85rem; font-weight: 600; white-space: nowrap; }
+  .gain.nc { color: var(--muted); font-weight: 400; }
+  .gain.grave { color: var(--bad); border-color: var(--bad); }
+  .gain.ok { border-color: var(--good); }
+  .prio p { margin: 6px 0; }
+  .etiq { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; margin-right: 6px; }
+  pre.macro { background: var(--row); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin: 6px 0;
+              font-size: .88rem; white-space: pre-wrap; }
+  code { background: var(--row); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-size: .86em;
+         word-break: break-word; }
+  .moments a { margin-right: 4px; white-space: nowrap; display: inline-block; }
+  .boss-chip { display: inline-block; font-size: .8rem; color: var(--muted); border: 1px solid var(--border);
+               border-radius: 999px; padding: 0 8px; margin: 2px 4px 2px 0; }
+  .sort { border-bottom: 1px dotted var(--muted); cursor: help; }
+  .fr { color: var(--muted); }
+  .bandeau { background: color-mix(in srgb, var(--warn) 14%, var(--surface)); border: 1px solid var(--warn);
+             border-radius: 8px; padding: 8px 12px; margin: 8px 0; font-size: .92rem; }
+  .pc { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .gris { --pc: #7d838b; } .vert { --pc: #1b9a1b; } .bleu { --pc: #0070dd; } .violet { --pc: #a335ee; }
+  .orange { --pc: #e07800; } .rose { --pc: #d6559b; } .dore { --pc: #b8942a; }
+  .pc, .pc-t { color: var(--pc, var(--muted)); }
+  .verdict { font-weight: 700; }
+  table.boss-soiree td a, .liens a { white-space: nowrap; }
+  .e-pos { color: var(--good); font-weight: 600; } .e-mid { color: var(--warn); font-weight: 600; }
+  .e-neg { color: var(--bad); font-weight: 600; }
+  .methode .carte p { margin: 4px 0 0; font-size: .92rem; }
+  .methode summary { cursor: pointer; }
+  p.mode { margin: 4px 0 10px; }
+  .refs { display: grid; gap: 10px; margin: 12px 0 16px; }
+  .ref { display: grid; grid-template-columns: minmax(0, 1fr) 11rem; gap: 4px 16px; align-items: center;
+         background: var(--surface); border: 1px solid var(--border); border-left: 6px solid var(--muted);
+         border-radius: 10px; padding: 10px 14px; }
+  .ref.e-bad { border-left-color: var(--bad); } .ref.e-warn { border-left-color: var(--warn); }
+  .ref.e-good { border-left-color: var(--good); } .ref.moi { border-left-color: var(--accent); }
+  .ref .qui { font-size: 1.05rem; } .ref .qui b { font-size: 1.15rem; }
+  .ref .det { color: var(--muted); font-size: .85rem; } .ref .det b { color: var(--text); font-size: inherit; }
+  .ref .ecart { grid-row: span 2; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .ref .ecart .dps { font-size: 1.9rem; font-weight: 800; }
+  .ref .ecart .pc { font-size: 1.05rem; font-weight: 700; }
+  .ref .ecart .lib { color: var(--muted); font-size: .8rem; }
+  .ref.e-bad .ecart .dps, .ref.e-bad .ecart .pc { color: var(--bad); }
+  .ref.e-warn .ecart .dps, .ref.e-warn .ecart .pc { color: var(--warn); }
+  .ref.e-good .ecart .dps, .ref.e-good .ecart .pc { color: var(--good); }
+  .ref .barre { grid-column: 1; position: relative; height: 12px; background: var(--row); border-radius: 0 4px 4px 0; }
+  .ref .barre span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; background: var(--muted); }
+  .ref.e-bad .barre span { background: var(--bad); } .ref.e-warn .barre span { background: var(--warn); }
+  .ref.e-good .barre span { background: var(--good); } .ref.moi .barre span { background: var(--accent); }
+  .ref .barre i { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); }
+  .duo { display: grid; grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr); column-gap: 0; row-gap: 4px;
+         margin: 8px 0; }
+  .duo-tete { font-weight: 700; padding: 4px 10px; position: sticky; top: 0; background: var(--surface); z-index: 1; }
+  .duo-tete.dm { text-align: right; border-bottom: 3px solid var(--accent); }
+  .duo-tete.dr { border-bottom: 3px solid var(--muted); }
+  .duo-minute { grid-column: 1 / -1; text-align: center; font-weight: 700; color: var(--muted); font-size: .85rem;
+                margin-top: 10px; border-top: 1px solid var(--border); padding-top: 4px; }
+  .duo-phase { grid-column: 1 / -1; text-align: center; font-style: italic; color: var(--muted); font-size: .88rem;
+               background: var(--row); border-radius: 6px; padding: 2px 8px; }
+  .duo-axe { background: linear-gradient(var(--border), var(--border)) center / 2px 100% no-repeat; }
+  .duo-c { padding: 3px 10px; border-radius: 6px; font-size: .92rem; }
+  .duo-c.cd:not(.vide) { background: color-mix(in srgb, var(--c) 12%, var(--surface)); }
+  .duo-c.dm { text-align: right; } .duo-c.dm.cd:not(.vide) { border-right: 4px solid var(--c); }
+  .duo-c.dr.cd:not(.vide) { border-left: 4px solid var(--c); }
+  .duo-c .t { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .85rem; }
+  .duo-c .absent { color: var(--muted); font-style: italic; font-size: .85rem; }
+  .duo-c .pourquoi { display: block; font-size: .85rem; color: var(--warn); }
+  .phases svg { width: 100%; height: auto; display: block; }
+  .timeline { list-style: none; margin: 8px 0; padding: 0 0 0 4px; border-left: 2px solid var(--border); }
+  .timeline li { position: relative; padding: 3px 0 3px 18px; display: flex; gap: 10px; align-items: baseline; }
+  .timeline li::before { content: ""; position: absolute; left: -6px; top: 10px; width: 10px; height: 10px;
+                         border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); }
+  .timeline li.cd::before { border-color: #2a78d6; background: #2a78d6; }
+  .timeline li.manque::before, .timeline li.faute::before { border-color: var(--bad); background: var(--bad); }
+  .timeline li.phase::before { border-color: var(--muted); background: var(--row); border-radius: 2px; }
+  .timeline li.trou::before { border-color: var(--warn); }
+  .timeline li.phase .ev { color: var(--muted); font-style: italic; }
+  .timeline li.minute { padding: 10px 0 2px 18px; font-weight: 600; color: var(--muted); font-size: .85rem; }
+  .timeline li.minute::before { display: none; }
+  .timeline .pourquoi { display: block; font-size: .88rem; color: var(--warn); }
+  .timeline .t { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 3em; font-size: .9rem; }
+  .phases svg { width: 100%; height: auto; display: block; }
+  .timeline { list-style: none; margin: 8px 0; padding: 0 0 0 4px; border-left: 2px solid var(--border); }
+  .timeline li { position: relative; padding: 3px 0 3px 18px; display: flex; gap: 10px; align-items: baseline; }
+  .timeline li::before { content: ""; position: absolute; left: -6px; top: 10px; width: 10px; height: 10px;
+                         border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); }
+  .timeline li.cd::before { border-color: #2a78d6; background: #2a78d6; }
+  .timeline li.manque::before, .timeline li.faute::before { border-color: var(--bad); background: var(--bad); }
+  .timeline li.phase::before { border-color: var(--muted); background: var(--row); border-radius: 2px; }
+  .timeline li.trou::before { border-color: var(--warn); }
+  .timeline li.phase .ev { color: var(--muted); font-style: italic; }
+  .timeline li.minute { padding: 10px 0 2px 18px; font-weight: 600; color: var(--muted); font-size: .85rem; }
+  .timeline li.minute::before { display: none; }
+  .timeline .pourquoi { display: block; font-size: .88rem; color: var(--warn); }
+  .timeline .t { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 3em; font-size: .9rem; }
+  .phases .mono { fill: var(--row); stroke: var(--border); } .phases .multi { fill: #eb6834; opacity: .55; }
+  .phases text { fill: var(--muted); font: 12px system-ui, sans-serif; }
+  section.boss > summary { font-size: 1.1rem; padding: 4px 0; }
+  section.boss { margin: 10px 0; }
+  details.boss { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px;
+                 margin: 10px 0; }
+  details.boss > summary { font-size: 1.08rem; }
+  .muted { color: var(--muted); }
+  @media (max-width: 600px) { .prio > li { padding-left: 16px; } .prio > li::before { position: static; margin-bottom: 6px; } }
+</style>
+<style>
+  .viz { --s1: #2a78d6; --s2: #eb6834; margin: 10px 0 4px; }
+  @media (prefers-color-scheme: dark) { .viz { --s1: #3987e5; --s2: #d95926; } }
+  .viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .viz text { fill: var(--muted); font: 12px system-ui, sans-serif; }
+  .viz text.lib { fill: var(--text); }
+  .viz .grille { stroke: var(--border); stroke-width: 1; }
+  .viz .s1 { fill: var(--s1); } .viz .s2 { fill: var(--s2); }
+  .viz .l1 { stroke: var(--s1); } .viz .l2 { stroke: var(--s2); }
+  .viz circle { stroke: var(--surface); stroke-width: 2; }
+  .viz [data-tip]:hover { opacity: .75; }
+  .viz .legende { display: flex; gap: 16px; flex-wrap: wrap; font-size: .88rem; color: var(--muted); margin: 0 0 4px; }
+  .viz .legende i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .viz .legende i.trou { border-radius: 2px; opacity: .45; }
+  #infobulle { position: fixed; pointer-events: none; display: none; z-index: 10; background: var(--surface);
+               color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px;
+               font-size: .85rem; box-shadow: 0 2px 8px rgba(0,0,0,.15); white-space: pre; }
+</style>
+<style>
+  .cause { display: flex; height: 10px; border-radius: 3px; overflow: hidden; background: var(--row); margin: 4px 0 2px; max-width: 420px; }
+  .cause span { display: block; height: 100%; }
+  .c-freq { background: #2a78d6; } .c-crit { background: #eb6834; } .c-coup { background: #9a6fd0; } .c-abs { background: #888; }
+  .pastille { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin: 0 4px 0 10px; }
+  .sorts-pourquoi { list-style: none; padding: 0; }
+  .sorts-pourquoi li { border-bottom: 1px solid var(--border); padding: 8px 0; }
+  .sorts-pourquoi .faits { color: var(--muted); font-size: .92rem; }
+  .centile { font-weight: 600; }
+  .c-legendaire { color: #e08a00; } .c-epique { color: #a335ee; } .c-rare { color: #0070dd; }
+  .c-peu { color: #1eaa1e; } .c-commun { color: var(--muted); }
+  .mecanisme { margin: 6px 0 0; padding: 6px 10px; border-left: 3px solid #eb6834; background: var(--row); font-size: .92rem; }
+  section.boss { border-top: 2px solid var(--border); margin-top: 28px; }
+</style>
+<h1>Mon DPS — Mécafree</h1>
+<p class="meta">BeastMastery Hunter · ilvl 322 · raid du 08/10/2026 · 1 boss tués, meilleur kill de chacun · <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf">rapport Warcraft Logs</a> · <a href="https://murlok.io/hunter/beast-mastery/m+" title="Talents, statistiques et équipement des meilleurs joueurs de ta spé en Mythique+ (Murlok)">builds du top M+ (Murlok) ↗</a></p>
+<p class="mode"><span class="etiq">Niveau d'analyse</span><strong>avec équipement</strong> : rotation, simulations (builds, stats, potentiel, fautes de rotation) et analyse d'équipement.</p>
+<p class="note"><strong>Moyennes sur 1 boss</strong></p>
+<div class="cartes">
+<div class="carte"><div class="val">−59 %</div><div class="lib">écart moyen au top 3 mondial · DPS moyen 120 k</div></div>
+<div class="carte"><div class="val"><span class="pc gris" title="centile 8 : à travailler">8</span></div><div class="lib"><span class="verdict pc-t gris">à travailler</span> · centile moyen (tous ilvl) : tu fais mieux que 8 % des joueurs</div></div>
+<div class="carte"><div class="val"><span class="pc gris" title="centile 5 : à travailler">5</span></div><div class="lib"><span class="verdict pc-t gris">à travailler</span> · centile moyen à ton ilvl : tu fais mieux que 5 % des joueurs</div></div>
+<div class="carte"><div class="val">≈ 19,2 %</div><div class="lib">à gagner par le jeu (estimé)</div></div>
+<div class="carte"><div class="val">−53 %</div><div class="lib">face à ton potentiel simc</div></div>
+</div>
+<p class="note">Les gains de jeu se recouvrent en partie : leur somme (37,5 %) dépasse ton écart au joueur équivalent (19,2 %), qui donne l'ordre de grandeur de ce que le jeu peut rapporter. Les gains de chaque constat restent utiles pour les classer entre eux.</p>
+<h2>Boss par boss</h2>
+<div class="table-wrap">
+<table class="boss-soiree">
+<thead><tr><th>Boss</th><th class="num">Centile</th><th class="num">À ton ilvl</th><th class="num">DPS</th><th class="num">Durée</th><th class="num">Rang</th><th class="num">vs top 3</th><th class="num">vs potentiel simc</th><th class="num">Wipes</th><th>Combat</th></tr></thead>
+<tbody>
+<tr><td><a href="#boss-the-twin-fangs">The Twin Fangs</a></td><td class="num"><span class="pc gris" title="centile 8 : à travailler">8</span></td><td class="num"><span class="pc gris" title="centile 5 : à travailler">5</span></td><td class="num">120 k</td><td class="num">7:47</td><td class="num">≈ 39 092 / 42 492</td><td class="num"><span class="e-neg">−59 %</span></td><td class="num"><span class="e-neg">−53 %</span></td><td class="num">3</td><td><span class="liens"><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4" title="Le combat sur warcraftlogs.com">Logs</a> · <a href="https://www.wipefest.gg/report/bmAZqJDHQ9jRv3Kf/fight/4" title="Mécaniques du combat sur wipefest.gg">Wipefest</a> · <a href="https://wowanalyzer.com/report/bmAZqJDHQ9jRv3Kf/4/M%C3%A9cafree/standard/overview" title="Ton analyse sur wowanalyzer.com">Analyzer</a></span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Centiles aux couleurs de Warcraft Logs : gris sous 25, vert 25 à 49, bleu 50 à 74, violet 75 à 94, orange 95 à 98, rose 99, doré 100. Écarts : en vert au-dessus de la référence, en orange jusqu'à 15 % en dessous, en rouge au-delà ; face au top 3, un écart de 30 à 40 % reste courant. Pas d'écart à l'équivalent ici : il est choisi pour faire environ 25 % de plus que toi, son écart vaut donc toujours environ −20 % (il sert à comparer la rotation, dans le détail de chaque boss). Le nom du boss mène à son détail ; « Logs », « Wipefest » et « Analyzer » ouvrent le combat sur warcraftlogs.com, ses mécaniques sur wipefest.gg et ton analyse sur wowanalyzer.com.</p>
+<h2>À corriger en priorité</h2>
+<ol class="prio"><li><span class="gain">+27 k · +22,1 % estimé</span><h3>Temps sans lancer</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>14,4 s par minute sans rien faire (ni lancer, ni incantation, ni canalisation ; trous de plus de 2,5 s), contre 1,2 s chez Богуподобная.</p><p><span class="etiq">Conseil</span>Garder un sort instantané pour les déplacements, préparer le changement de cible.</p><p class="note"><span class="etiq">Preuve</span>Chronologie des lancers du log.</p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2065888&amp;end=2075888">The Twin Fangs 0:47 (9,1 s, après Kill Command (Ordre de tuer))</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2162018&amp;end=2172018">The Twin Fangs 2:23 (5,8 s, après Kill Command (Ordre de tuer))</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2123678&amp;end=2133678">The Twin Fangs 1:45 (4,7 s, après Kill Command (Ordre de tuer))</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2406988&amp;end=2416988">The Twin Fangs 6:28 (4,6 s, après Kill Command (Ordre de tuer))</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2247648&amp;end=2257648">The Twin Fangs 3:49 (4,5 s, après Exhilaration (Enthousiasme))</a> </p></li><li><span class="gain ok">+11 k · +9,2 % ✓ simc</span><h3>Bestial Wrath (Courroux bestial) : 13 lancers de moins</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>10 lancers contre 23 possibles (au prorata de ton temps en vie) ; Богуподобная le relance toutes les 31 s, toi avec 84 s de retard cumulé. Relancé 6 fois au moins 5 s après être redevenu disponible (en tout 130 s perdues) ; pendant ces retards : temps sans lancer (5), vague d&#x27;adds en cours (2), aucune cause visible (rotation) (1).</p><p><span class="etiq">Conseil</span>Le relancer dès qu'il est disponible, sauf si le boss devient inaccessible dans les secondes qui suivent.</p><p><span class="etiq">Affichage</span>WeakAura de cooldowns (barre d&#x27;icônes) qui montre Dark Transformation, Army of the Dead et Blightfall disponibles.</p><p class="note"><span class="etiq">Preuve</span>Lancers du log comparés à ceux de la référence ; intervalle médian de la référence. <strong>Validé en simulation : ta faute, à ton rythme, coûte −11,5 % dans simc, celle des références à leur rythme −2,3 % ; écart −9,2 %.</strong></p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2060268&amp;end=2070268">The Twin Fangs 0:41 (+41 s)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2133568&amp;end=2143568">The Twin Fangs 1:55 (+12 s)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2194068&amp;end=2204068">The Twin Fangs 2:55 (+29 s)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2261168&amp;end=2271168">The Twin Fangs 4:02 (+6 s)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2347968&amp;end=2357968">The Twin Fangs 5:29 (+23 s)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2431168&amp;end=2441168">The Twin Fangs 6:52 (+19 s)</a> </p></li><li><span class="gain">+6 k · +4,7 % estimé</span><h3>Familier absent en début de combat</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Call Pet 3 (Appel du familier 3) lancé à 0:35 : ton familier n'était pas là avant (pas de Kill Command, pas de dégâts de familier).</p><p><span class="etiq">Conseil</span>Vérifier son familier avant le pull (et le ressusciter avant le combat s'il est mort au précédent).</p><p><span class="etiq">Affichage</span>WeakAura ou alerte « familier absent » hors combat.</p><p class="note"><span class="etiq">Preuve</span>Lancers du log : invocation de familier pendant le combat.</p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2053978&amp;end=2063978">The Twin Fangs 0:35</a> </p></li><li><span class="gain ok">+2 k · +1,8 % ✓ simc</span><h3>À viser : Aln&#x27;hara Sprigshot</h3><span class="boss-chip">Artisanat</span><p><span class="etiq">Cause</span>Simulé à la place de ta pièce (Arme) : +1,9 % en monocible, +1,0 % à 3 cibles.</p><p><span class="etiq">Conseil</span>Source : Artisanat.</p><p class="note"><span class="etiq">Preuve</span>Objets de la saison (données Raidbots) que tu peux porter, simulés un par un. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain ok">+2 k · +1,6 % ✓ simc</span><h3>À viser : Darkmoon Dominion: Blood</h3><span class="boss-chip">Artisanat</span><p><span class="etiq">Cause</span>Simulé à la place de ta pièce (Bijou 2) : +1,6 % en monocible, +1,5 % à 3 cibles.</p><p><span class="etiq">Conseil</span>Source : Artisanat.</p><p class="note"><span class="etiq">Preuve</span>Objets de la saison (données Raidbots) que tu peux porter, simulés un par un. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li></ol>
+<details><summary>Les 13 autres constats</summary><ol class="prio"><li><span class="gain ok">+2 k · +1,6 % ✓ simc</span><h3>À viser : Loa Worshiper&#x27;s Band</h3><span class="boss-chip">Artisanat</span><p><span class="etiq">Cause</span>Simulé à la place de ta pièce (Anneau 2) : +1,6 % en monocible, +1,4 % à 3 cibles.</p><p><span class="etiq">Conseil</span>Source : Artisanat.</p><p class="note"><span class="etiq">Preuve</span>Objets de la saison (données Raidbots) que tu peux porter, simulés un par un. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain ok">+2 k · +1,3 % ✓ simc</span><h3>Enchantement : Jambes</h3><p><span class="etiq">Cause</span>Les références mettent l'enchantement +41 Agility/Strength &amp; +115 Stamina (4 d'entre elles) : +1,3 % sur ta pièce.</p><p><span class="etiq">Conseil</span>Mettre l'enchantement +41 Agility/Strength &amp; +115 Stamina.</p><p class="note"><span class="etiq">Preuve</span>Équipement des références lu dans leurs logs, simulé sur ta pièce. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain ok">+2 k · +1,3 % ✓ simc</span><h3>Enchantement : Anneau 1</h3><p><span class="etiq">Cause</span>Les références mettent l'enchantement Enchant Ring - Eyes of the Eagle (4 d'entre elles) : +1,3 % sur ta pièce.</p><p><span class="etiq">Conseil</span>Mettre l'enchantement Enchant Ring - Eyes of the Eagle.</p><p class="note"><span class="etiq">Preuve</span>Équipement des références lu dans leurs logs, simulé sur ta pièce. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain">+1 k · +0,9 % estimé</span><h3>Temps globaux dépensés en sorts utilitaires</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Exhilaration (Enthousiasme) : 4 lancers contre 0 chez les références. Soit environ 4 temps globaux de recharge sans dégâts.</p><p><span class="etiq">Conseil</span>Ne les lancer que quand la mécanique l'exige : chaque temps global pris à la rotation est perdu pour les dégâts. À vérifier aux moments indiqués : certains peuvent être une consigne du raid ou imposés par le boss.</p><p class="note"><span class="etiq">Preuve</span>Lancers du log ; sorts de classe sans aucun dégât, qui prennent un temps global (données de simc), hors interruptions, cooldowns, bijoux et potion. Gain estimé : un temps global (1 s) au DPS moyen par lancer en trop.</p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2115468&amp;end=2125468">The Twin Fangs 1:37 Exhilaration (Enthousiasme)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2246898&amp;end=2256898">The Twin Fangs 3:48 Exhilaration (Enthousiasme)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2415998&amp;end=2425998">The Twin Fangs 6:37 Exhilaration (Enthousiasme)</a> <a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2481998&amp;end=2491998">The Twin Fangs 7:43 Exhilaration (Enthousiasme)</a> </p></li><li><span class="gain ok">+1 k · +0,7 % ✓ simc</span><h3>Consommable manquant : Rune d&#x27;augmentation</h3><p><span class="etiq">Cause</span>Absent sur 1 de tes 1 kills ; présent chez 75 % des références.</p><p><span class="etiq">Conseil</span>Prendre une rune d'augmentation avant le premier pull : l'effet dure une heure.</p><p class="note"><span class="etiq">Preuve</span>Buffs actifs pendant le combat (huile : équipement du log) ; valeur mesurée en simulation, variante sans ce consommable. <strong>Validé en simulation.</strong></p></li><li><span class="gain ok">+1 k · +0,6 % ✓ simc</span><h3>Enchantement : Torse</h3><p><span class="etiq">Cause</span>Les références mettent l'enchantement Enchant Chest - Mark of the Worldsoul (3 d'entre elles) : +0,6 % sur ta pièce.</p><p><span class="etiq">Conseil</span>Mettre l'enchantement Enchant Chest - Mark of the Worldsoul.</p><p class="note"><span class="etiq">Preuve</span>Équipement des références lu dans leurs logs, simulé sur ta pièce. <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain ok">+1 k · +0,5 % ✓ simc</span><h3>Build de Гаммаслон</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Ce build, joué par 1 référence(s), fait +0,5 % sur ton équipement. En plus chez lui : Camouflage, Emergency Salve, Improved Feign Death, Masterful Call, Training Expert, Tranquilizing Shot. En moins : Aspect of the Beast, Catlike Reflexes, Horsehair Tether, Intimidation, Pathfinding, Slicked Shoes.</p><p><span class="etiq">Conseil</span>Reprendre ce build (détail des talents et de ce qu'il change aux priorités de stats dans la section Build et stats).</p><p class="note"><span class="etiq">Preuve</span>Talents lus dans les logs des références, simulés sur ton équipement (équipement lu dans le log, pas d'export de l'addon). <strong>Validé en simulation (1 et 3 cibles, pondéré par ton temps en mono et en multicible).</strong></p></li><li><span class="gain">+0 k · +0,4 % estimé</span><h3>Bestial Wrath (Courroux bestial) lancé tard à l&#x27;ouverture</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Premier lancer à 41,9 s contre 1,3 s pour Богуподобная.</p><p><span class="etiq">Conseil</span>Le placer dans les premières secondes : chaque seconde perdue décale tous les lancers suivants.</p><p class="note"><span class="etiq">Preuve</span>Premier lancer de chaque joueur dans le log.</p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2060268&amp;end=2070268">The Twin Fangs 0:41</a> </p></li><li><span class="gain">+0 k · +0,3 % estimé</span><h3>Laceration (Lacération) : uptime trop bas sur le boss</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Présent 89 % du combat sur le boss, contre 99 % chez les références.</p><p><span class="etiq">Conseil</span>Le rafraîchir avant qu'il tombe (fenêtre de pandémie : dans les 30 % de fin de durée).</p><p class="note"><span class="etiq">Preuve</span>Debuffs du log sur le boss.</p></li><li><span class="gain nc">gain non chiffré</span><h3>Potion hors de Bestial Wrath</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>1 sur 1 hors de Bestial Wrath (Courroux bestial).</p><p><span class="etiq">Conseil</span>Boire la potion au début de Bestial Wrath.</p><p class="note"><span class="etiq">Preuve</span>Règle vérifiée lancer par lancer sur le log : 1 fautes sur 1 occasions, contre 0/2, 1/2, 0/0, 0/1 chez les références.</p><p class="moments note"><span class="etiq">Dans le log</span><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4&amp;type=casts&amp;source=9&amp;start=2328808&amp;end=2338808">The Twin Fangs 5:10</a> </p></li><li><span class="gain nc">gain non chiffré</span><h3>Howl of the Pack Leader (Hurlement du chef de meute) : actif moins souvent</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Actif 6 % du combat, contre 41 % chez les références.</p><p><span class="etiq">Conseil</span>Le maintenir actif : c'est un buff que les références gardent en permanence.</p><p class="note"><span class="etiq">Preuve</span>Buffs du log.</p></li><li><span class="gain nc">gain non chiffré</span><h3>Nature&#x27;s Ally (Allié de la nature) : actif moins souvent</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Actif 44 % du combat, contre 60 % chez les références.</p><p><span class="etiq">Conseil</span>Le maintenir actif : c'est un buff que les références gardent en permanence.</p><p class="note"><span class="etiq">Preuve</span>Buffs du log.</p></li><li><span class="gain nc">gain non chiffré</span><h3>Beast Cleave (Enchaînement bestial) : actif moins souvent</h3><span class="boss-chip">The Twin Fangs</span><p><span class="etiq">Cause</span>Actif 29 % du combat, contre 89 % chez les références.</p><p><span class="etiq">Conseil</span>Le maintenir actif : c'est un buff que les références gardent en permanence.</p><p class="note"><span class="etiq">Preuve</span>Buffs du log.</p></li></ol></details>
+<h2>Rotation</h2>
+<h3>Synthèse de la soirée</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Boss</th><th class="num">DPS</th><th class="num">vs équivalent</th><th class="num">vs top 3</th><th class="num">Multicible</th><th class="num">Cooldowns manqués</th><th class="num">vs potentiel simc</th></tr></thead>
+<tbody>
+<tr><td>The Twin Fangs</td><td class="num">120 k</td><td class="num">−19 %</td><td class="num">−59 %</td><td class="num">13 %</td><td class="num">13</td><td class="num">−53 %</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Potentiel simc : ton équipement simulé avec une rotation parfaite, à la durée du kill, chaque phase au nombre d'ennemis qu'elle a en moyenne (1, 2, ou 3 et plus). Un vrai combat (déplacements, phases, cibles qui changent) reste en dessous : l'écart sert surtout à comparer les boss entre eux et d'une soirée à l'autre.</p>
+<h3>Boss par boss</h3>
+<details class="boss" id="boss-the-twin-fangs"><summary><strong>The Twin Fangs</strong> · 120 k · −19 % face à l'équivalent · 13 % en multicible</summary>
+<p class="note">Ce combat : <span class="liens"><a href="https://www.warcraftlogs.com/reports/bmAZqJDHQ9jRv3Kf?fight=4" title="Le combat sur warcraftlogs.com">Warcraft Logs ↗</a> · <a href="https://www.wipefest.gg/report/bmAZqJDHQ9jRv3Kf/fight/4" title="Mécaniques du combat sur wipefest.gg">Wipefest ↗</a> · <a href="https://wowanalyzer.com/report/bmAZqJDHQ9jRv3Kf/4/M%C3%A9cafree/standard/overview" title="Ton analyse sur wowanalyzer.com">WoWAnalyzer ↗</a></span></p>
+<div class="refs"><div class="ref moi"><div class="qui"><b>Mécafree</b> (toi) <span class="det">· 120 k</span><div class="det"><b>rang ≈ 39 092</b> / 42 492 · centile 8 (5 à ton ilvl)</div></div><div class="ecart"><div class="dps">120 k</div><div class="lib">ton DPS</div></div><div class="barre"><span style="width:40.4%"></span><i style="left:40.4%" title="ton DPS"></i></div></div><div class="ref e-bad"><div class="qui"><span class="det">Équivalent :</span> <a href="https://www.warcraftlogs.com/reports/hjg1TQJZmLtzx2fw?fight=61"><b>Богуподобная</b></a> <span class="det">· 149 k</span><div class="det"><b>rang ≈ 34 920</b> / 42 586 · centile 18 (13 à son ilvl)<br>ilvl 321 · raid de 16 · 7,9 min · 82 % de talents communs</div></div><div class="ecart"><div class="dps">+29 k</div><div class="pc">+24 %</div><div class="lib">de DPS de plus que toi</div></div><div class="barre"><span style="width:50.0%"></span><i style="left:40.4%" title="ton DPS"></i></div></div><div class="ref e-bad"><div class="qui"><span class="det">Top 1 mondial :</span> <a href="https://www.warcraftlogs.com/reports/P9bXcQf8G3xwVr7k?fight=35"><b>순펫</b></a> <span class="det">· 298 k</span><div class="det">raid de 30</div></div><div class="ecart"><div class="dps">+178 k</div><div class="pc">+148 %</div><div class="lib">de DPS de plus que toi</div></div><div class="barre"><span style="width:100.0%"></span><i style="left:40.4%" title="ton DPS"></i></div></div><div class="ref e-bad"><div class="qui"><span class="det">Top 3 mondial :</span> <a href="https://www.warcraftlogs.com/reports/W4KXqd6ycvLm8gzG?fight=32"><b>Гаммаслон</b></a> <span class="det">· 293 k</span><div class="det">raid de 24</div></div><div class="ecart"><div class="dps">+173 k</div><div class="pc">+144 %</div><div class="lib">de DPS de plus que toi</div></div><div class="barre"><span style="width:98.4%"></span><i style="left:40.4%" title="ton DPS"></i></div></div><div class="ref e-bad"><div class="qui"><span class="det">Top 7 mondial :</span> <a href="https://www.warcraftlogs.com/reports/xHYKcvpRrgm86FPw?fight=38"><b>과녁</b></a> <span class="det">· 288 k</span><div class="det">raid de 30</div></div><div class="ecart"><div class="dps">+168 k</div><div class="pc">+139 %</div><div class="lib">de DPS de plus que toi</div></div><div class="barre"><span style="width:96.6%"></span><i style="left:40.4%" title="ton DPS"></i></div></div></div>
+<h4>Contexte : ce qui nuance la comparaison</h4><p>Buffs de raid absents de ton raid : <strong>Arcane Intellect, Battle Shout, Mystic Touch</strong>.</p><div class="table-wrap">
+<table>
+<thead><tr><th></th><th class="num">Taille du raid</th><th>Évocateur Augmentation</th><th>Buffs de raid en plus du tien</th><th>Buffs externes reçus</th></tr></thead>
+<tbody>
+<tr><td><strong>Toi</strong></td><td class="num">14</td><td>non</td><td>—</td><td>Power Infusion 3 %</td></tr>
+<tr><td>Богуподобная (équivalent)</td><td class="num">16 <span class="muted">(+2)</span></td><td>non</td><td>Battle Shout, Mystic Touch</td><td>Power Infusion 6 %</td></tr>
+<tr><td>순펫 (top 1)</td><td class="num">30 <span class="muted">(+16)</span></td><td>non</td><td>Arcane Intellect, Battle Shout, Mystic Touch</td><td>—</td></tr>
+<tr><td>Гаммаслон (top 3)</td><td class="num">24 <span class="muted">(+10)</span></td><td>non</td><td>Arcane Intellect, Battle Shout, Mystic Touch</td><td>Power Infusion 13 %</td></tr>
+<tr><td>과녁 (top 7)</td><td class="num">30 <span class="muted">(+16)</span></td><td>non</td><td>Arcane Intellect, Battle Shout, Mystic Touch</td><td>Power Infusion 14 %</td></tr>
+</tbody>
+</table>
+</div><p class="note">Un Évocateur Augmentation donne à quelques DPS une grosse part de ses propres dégâts (Ebon Might, Prescience) : un joueur qui en profite fait mécaniquement plus. Chaque buff de raid absent de ton raid (Battle Shout, Arcane Intellect, Mystic Touch, Chaos Brand…) coûte quelques % de DPS. Un raid plus grand a des boss avec plus de points de vie et davantage de buffs et d'externes : le top joue souvent à 25-30. </p>
+<div class="phases"><svg viewBox="0 0 960 26"><text x="0" y="17">Phases (orange : 3 ennemis ou +)</text><rect class="mono" x="200.0" y="4" width="60.5" height="18"><title>Monocible : 0:00 → 0:38 (2,0 ennemis)</title></rect><rect class="multi" x="260.5" y="4" width="14.3" height="18"><title>Multicible : 0:38 → 0:47 (3,9 ennemis)</title></rect><rect class="mono" x="274.8" y="4" width="97.1" height="18"><title>Monocible : 0:47 → 1:48 (2,0 ennemis)</title></rect><rect class="multi" x="371.9" y="4" width="17.5" height="18"><title>Multicible : 1:48 → 1:59 (4,4 ennemis)</title></rect><rect class="mono" x="389.4" y="4" width="141.6" height="18"><title>Monocible : 1:59 → 3:28 (2,0 ennemis)</title></rect><rect class="multi" x="531.0" y="4" width="15.9" height="18"><title>Multicible : 3:28 → 3:38 (4,0 ennemis)</title></rect><rect class="mono" x="546.9" y="4" width="90.7" height="18"><title>Monocible : 3:38 → 4:35 (2,0 ennemis)</title></rect><rect class="multi" x="637.6" y="4" width="17.5" height="18"><title>Multicible : 4:35 → 4:46 (4,2 ennemis)</title></rect><rect class="mono" x="655.1" y="4" width="144.8" height="18"><title>Monocible : 4:46 → 6:17 (2,0 ennemis)</title></rect><rect class="multi" x="800.0" y="4" width="14.3" height="18"><title>Multicible : 6:17 → 6:26 (3,9 ennemis)</title></rect><rect class="mono" x="814.3" y="4" width="93.9" height="18"><title>Monocible : 6:26 → 7:25 (2,0 ennemis)</title></rect><rect class="multi" x="908.2" y="4" width="20.7" height="18"><title>Multicible : 7:25 → 7:38 (4,2 ennemis)</title></rect><rect class="mono" x="928.9" y="4" width="15.1" height="18"><title>Monocible : 7:38 → 7:47 (1,7 ennemis)</title></rect></svg></div>
+<h4>Déroulé du combat : toi face à Богуподобная</h4>
+<p class="note">Ligne par ligne : à gauche toi, à droite Богуподобная. Un même cooldown lancé par les deux à moins de 10 s d'écart est sur la même ligne ; « pas lancé » : l'un des deux ne l'a pas lancé à ce moment-là. En rouge : un cooldown relancé 5 s ou plus après être redevenu disponible, avec ce qui se passait pendant ce temps.</p><div class="duo"><div class="duo-tete dm">Toi</div><div class="duo-tete t"></div><div class="duo-tete dr">Богуподобная</div><div class="duo-minute">0:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">0:01</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm cd" style="--c:#8a56c9"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#8a56c9"><span class="t">0:05</span> Potion</div><div class="duo-c dm trou"><span class="t">0:09</span> <span class="mid">Rien lancé pendant 9,5 s (après Cobra Shot (Tir du cobra))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">0:41</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 0:01 (+41 s)</span> <span class="pourquoi">pendant ce retard : vague d&#x27;adds en cours, 13,2 s sans lancer</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">0:40</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-phase">Fin de la phase multicible</div><div class="duo-c dm trou"><span class="t">0:47</span> <span class="mid">Rien lancé pendant 9,1 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-minute">1:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">1:11</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">1:12</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">1:42</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou"><span class="t">1:45</span> <span class="mid">Rien lancé pendant 4,7 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">1:55</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 1:43 (+12 s)</span> <span class="pourquoi">pendant ce retard : vague d&#x27;adds en cours, 4,7 s sans lancer</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-phase">Fin de la phase multicible</div><div class="duo-minute">2:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">2:13</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou"><span class="t">2:14</span> <span class="mid">Rien lancé pendant 4,4 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-c dm trou"><span class="t">2:23</span> <span class="mid">Rien lancé pendant 5,8 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">2:44</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">2:55</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 2:26 (+29 s)</span> <span class="pourquoi">pendant ce retard : 6,6 s sans lancer</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-minute">3:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">3:14</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou"><span class="t">3:17</span> <span class="mid">Rien lancé pendant 4,4 s (après Wild Thrash (Rossée sauvage))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">3:26</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm trou"><span class="t">3:30</span> <span class="mid">Rien lancé pendant 4,2 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-phase">Fin de la phase multicible</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">3:45</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou"><span class="t">3:49</span> <span class="mid">Rien lancé pendant 4,5 s (après Exhilaration (Enthousiasme))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-c dm trou"><span class="t">3:58</span> <span class="mid">Rien lancé pendant 4,3 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-minute">4:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">4:02</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 3:57 (+6 s)</span> <span class="pourquoi">pendant ce retard : 4,3 s sans lancer</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">4:16</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou vide"></div><div class="duo-axe"></div><div class="duo-c dr trou"><span class="t">4:32</span> <span class="mid">Rien lancé pendant 4,1 s</span></div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">4:35</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-phase">Fin de la phase multicible</div><div class="duo-minute">5:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">5:09</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm cd" style="--c:#8a56c9"><span class="t">5:10</span> Potion</div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#8a56c9"><span class="absent">pas lancé</span></div><div class="duo-c dm cd" style="--c:#8a56c9"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#8a56c9"><span class="t">5:23</span> Potion</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">5:29</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 5:06 (+23 s)</span> <span class="pourquoi">pendant ce retard : 2,5 s sans lancer</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">5:40</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-c dm trou vide"></div><div class="duo-axe"></div><div class="duo-c dr trou"><span class="t">5:44</span> <span class="mid">Rien lancé pendant 4,5 s</span></div><div class="duo-minute">6:00</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">6:02</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">6:20</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-phase">Fin de la phase multicible</div><div class="duo-c dm trou"><span class="t">6:28</span> <span class="mid">Rien lancé pendant 4,6 s (après Kill Command (Ordre de tuer))</span></div><div class="duo-axe"></div><div class="duo-c dr trou vide"></div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="t">6:52</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span> <span class="bad">disponible depuis 6:33 (+19 s)</span> <span class="pourquoi">pendant ce retard : tu lances Barbed Shot (Tir acéré), Cobra Shot (Tir du cobra), Exhilaration (Enthousiasme), Kill Command (Ordre de tuer)</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">6:51</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-minute">7:00</div><div class="duo-phase">Tes adds : début de phase multicible (~4 ennemis)</div><div class="duo-c dm cd" style="--c:#2a78d6"><span class="absent">pas lancé</span></div><div class="duo-axe"></div><div class="duo-c dr cd" style="--c:#2a78d6"><span class="t">7:26</span> <span class="sort" title="Requiert Chasseur Votre familier et vous entrez dans une rage folle, ce qui inflige immédiatement ([800% of Attack Power]) points de dégâts physiques à sa cible et augmente vos dégâts à tous les deux de 20 % pendant 15 s. Dissipe les effets de contrôle affectant votre familier. [ Odeur du sang : L’activation de Courroux bestial confère 0 charges de Tir acéré ]">Bestial Wrath <span class="fr">(Courroux bestial)</span></span></div><div class="duo-phase">Fin de la phase multicible</div></div>
+<h4>Règles de la rotation</h4><div class="table-wrap">
+<table>
+<thead><tr><th>Règle de la rotation simc</th><th class="num">Toi : fautes / occasions</th><th class="num">Équivalent</th><th class="num">Top 3</th></tr></thead>
+<tbody>
+<tr><td>Bijou hors de Bestial Wrath</td><td class="num">—</td><td class="num">0 / 5</td><td class="num">1 / 4 · 2 / 2 · 2 / 4</td></tr>
+<tr><td>Potion hors de Bestial Wrath</td><td class="num">1 / 1</td><td class="num">0 / 2</td><td class="num">1 / 2 · — · 0 / 1</td></tr>
+</tbody>
+</table>
+</div>
+<h4>Dégâts par sort en phase monocible <span class="muted">(405 s)</span></h4><div class="table-wrap">
+<table>
+<thead><tr><th>Sort</th><th class="num">Toi</th><th class="num">Équivalent</th><th class="num">Top 3</th><th class="num">Écart</th></tr></thead>
+<tbody>
+<tr><td><span class="sort" title="[Item Effect] 45 m de portée Canalisée (2 s d&#x27;incantation) 4 min de recharge Vous canalisez un déluge de rage venimeuse pendant 2 s, ce qui inflige ( 1 * 385354 ) points de dégâts de nature à votre cible et éclabousse l’ensemble des adversaires proches, qui subissent ( 1 * 67816 ) points de dégâts de nature. Dégâts réduits au-delà de 8 cibles.">Font of Venomous Rage <span class="fr">(Source de rage venimeuse)</span></span></td><td class="num">0 k</td><td class="num">—</td><td class="num">18 k</td><td class="num">—</td></tr>
+<tr><td>Guillotine</td><td class="num">0 k</td><td class="num">—</td><td class="num">10 k</td><td class="num">—</td></tr>
+<tr><td>Familier : familier principal</td><td class="num">20 k</td><td class="num">30 k</td><td class="num">48 k</td><td class="num bad">−9 k</td></tr>
+<tr><td><span class="sort" title="Instantanée 7.5 s de recharge 1 Charge Requiert Chasseur Vous donnez l’ordre de tuer à votre familier, qui charge sauvagement votre cible et lui inflige ([247.2% of Attack Power]) points de dégâts physiques.">Kill Command <span class="fr">(Ordre de tuer)</span></span></td><td class="num">14 k</td><td class="num">21 k</td><td class="num">36 k</td><td class="num bad">−6 k</td></tr>
+<tr><td>Boar Charge <span class="fr">(Boutoir)</span></td><td class="num">6 k</td><td class="num">11 k</td><td class="num">17 k</td><td class="num bad">−5 k</td></tr>
+<tr><td><span class="sort" title="2 Charges Requiert Chasseur Requiert Arme à distance Vous tirez sur votre adversaire un trait perforant qui lui inflige [([85.7% of Attack Power]) * 5] points de dégâts de saignement en 12 s . Si Tir acéré est réappliqué, les dégâts restants s’ajoutent au second tir. Génère (5 * 8 / 2) points de focalisation en 8 s .">Barbed Shot <span class="fr">(Tir acéré)</span></span></td><td class="num">16 k</td><td class="num">20 k</td><td class="num">35 k</td><td class="num bad">−3 k</td></tr>
+<tr><td><span class="sort" title="Talent Focalisation : 35 40 m de portée Instantanée Requiert Chasseur Requiert Arme à distance Un tir réflexe qui inflige [([390.4% of Attack Power]) * ((Min( 90 - 1, 19) * 12 + 112) / 340)] points de dégâts physiques. Réduit le temps de recharge d’Ordre de tuer de 1 s.">Cobra Shot <span class="fr">(Tir du cobra)</span></span></td><td class="num">11 k</td><td class="num">14 k</td><td class="num">18 k</td><td class="num bad">−3 k</td></tr>
+<tr><td><span class="sort" title="Vous invoquez un troupeau d’animaux au galop qui piétine les adversaires et leur inflige [([150% of Attack Power]) * 3] points de dégâts physiques en 7 s.">Stampede <span class="fr">(Ruée)</span></span></td><td class="num">2 k</td><td class="num">4 k</td><td class="num">10 k</td><td class="num">−2 k</td></tr>
+</tbody>
+</table>
+</div>
+<h4>Dégâts par sort en phase multicible <span class="muted">(63 s)</span></h4><div class="table-wrap">
+<table>
+<thead><tr><th>Sort</th><th class="num">Toi</th><th class="num">Équivalent</th><th class="num">Top 3</th><th class="num">Écart</th></tr></thead>
+<tbody>
+<tr><td>Guillotine</td><td class="num">0 k</td><td class="num">—</td><td class="num">14 k</td><td class="num">—</td></tr>
+<tr><td>Beast Cleave <span class="fr">(Enchaînement bestial)</span></td><td class="num">1 k</td><td class="num">16 k</td><td class="num">10 k</td><td class="num bad">−14 k</td></tr>
+<tr><td>Familier : familier principal</td><td class="num">35 k</td><td class="num">48 k</td><td class="num">49 k</td><td class="num bad">−13 k</td></tr>
+<tr><td><span class="sort" title="Vous ordonnez à votre familier de rosser les adversaires à moins de 10 mètres, ce qui leur inflige ([191% of Attack Power]) points de dégâts physiques. Ces dégâts sont augmentés de 300 % si Rossée sauvage touche au moins 2 adversaires. Dégâts réduits au-delà de 8 cibles.">Wild Thrash <span class="fr">(Rossée sauvage)</span></span></td><td class="num">3 k</td><td class="num">11 k</td><td class="num">24 k</td><td class="num bad">−8 k</td></tr>
+<tr><td><span class="sort" title="Piétinement permet à votre prochain Tir du cobra de bénéficier d’Enchaînement bestial à 30 % d’efficacité, ou d’infliger 20 % de dégâts supplémentaires à votre cible principale, cumulable jusqu’à 4 fois.">Cobra Cleave <span class="fr">(Enchaînement du cobra)</span></span></td><td class="num">2 k</td><td class="num">6 k</td><td class="num">9 k</td><td class="num bad">−4 k</td></tr>
+<tr><td><span class="sort" title="Vous invoquez un troupeau d’animaux au galop qui piétine les adversaires et leur inflige [([150% of Attack Power]) * 3] points de dégâts physiques en 7 s.">Stampede <span class="fr">(Ruée)</span></span></td><td class="num">12 k</td><td class="num">15 k</td><td class="num">11 k</td><td class="num bad">−3 k</td></tr>
+<tr><td><span class="sort" title="[Item Effect] Instantanée 1.5 min de recharge Approximativement 18 activations par minute Vous croquez le cœur et vous laissez envahir par une faim vorace, qui vous octroie un bonus de 151 à la Force ou l’Agilité pendant 20 s. Tant que la faim persiste, vous avez une chance très élevée de dévorer un morceau de votre cible à chaque attaque, ce qui lui inflige 3535 points de dégâts physiques et augmente votre Force ou Agilité de 17 points supplémentaires.">Voracious Heart of Ula&#x27;tek <span class="fr">(Cœur avide d’Ula’tek)</span></span></td><td class="num">0 k</td><td class="num">2 k</td><td class="num">3 k</td><td class="num">−2 k</td></tr>
+<tr><td><span class="sort" title="Quand Enchaînement bestial est actif, Ordre de tuer frappe également les ennemis proches pour 20 % des dégâts infligés. Dégâts réduits au-delà de 8 cibles.">Kill Cleave <span class="fr">(Enchaînement funeste)</span></span></td><td class="num">1 k</td><td class="num">3 k</td><td class="num">4 k</td><td class="num">−2 k</td></tr>
+</tbody>
+</table>
+</div>
+<h4>Adds</h4><p>Adds qui comptent (les références y mettent des dégâts) : Spawn of Vexhul.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th class="num">Toi</th><th class="num">Équivalent</th><th class="num">Top 1</th><th class="num">Top 2</th><th class="num">Top 3</th></tr></thead>
+<tbody>
+<tr><td>Adds avec un DoT ()</td><td class="num">0 %</td><td class="num">0 %</td><td class="num">0 %</td><td class="num">0 %</td><td class="num">0 %</td></tr>
+<tr><td>Délai de pose (médiane)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>Délai pour frapper une nouvelle vague</td><td class="num">8,9 s</td><td class="num">0,4 s</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>Part des dégâts sur les adds</td><td class="num">10 %</td><td class="num">16 %</td><td class="num">0 %</td><td class="num">0 %</td><td class="num">0 %</td></tr>
+<tr><td>Sorts de zone par minute (multicible)</td><td class="num">0,0</td><td class="num">0,0</td><td class="num">0,0</td><td class="num">0,0</td><td class="num">0,0</td></tr>
+<tr><td>Vagues avec un cooldown majeur</td><td class="num">4 / 6</td><td class="num">4 / 6</td><td class="num">1 / 4</td><td class="num">2 / 4</td><td class="num">3 / 4</td></tr>
+</tbody>
+</table>
+</div>
+<details><summary>Tes vagues d'adds une par une</summary><div class="table-wrap">
+<table>
+<thead><tr><th class="num">Arrivée</th><th class="num">Adds</th><th class="num">Avec une maladie</th><th class="num">Délai</th></tr></thead>
+<tbody>
+<tr><td class="num">1:48</td><td class="num">1</td><td class="num bad">0</td><td class="num">—</td></tr>
+<tr><td class="num">4:35</td><td class="num">1</td><td class="num bad">0</td><td class="num">—</td></tr>
+<tr><td class="num">7:25</td><td class="num">1</td><td class="num bad">0</td><td class="num">—</td></tr>
+</tbody>
+</table>
+</div></details>
+<h4>Pourquoi l'écart de dégâts</h4>
+<p>Sur les sorts qui perdent des dégâts (35 k au total), la perte vient de : <strong>72 %</strong> fréquence (moins de lancers, de coups ou de ticks) ; <strong>28 %</strong> dégâts par coup (stats, buffs, talents).</p>
+<p class="note">Légende des barres : <i class="pastille c-freq"></i>fréquence<i class="pastille c-crit"></i>critique<i class="pastille c-coup"></i>dégâts par coup<i class="pastille c-abs"></i>absent chez toi</p>
+<ul class="sorts-pourquoi">
+<li><strong>Familier : familier principal</strong> : −11 k <span class="muted">(22 k contre 33 k)</span><div class="cause"><span class="c-freq" style="width:85.9%"></span><span class="c-coup" style="width:14.1%"></span></div><span class="faits">coups directs −7 k ; ticks −4 k · 95 coups directs par minute contre 127 (familier ou invocation : moins souvent présent ou moins longtemps) · 16 ticks par minute contre 30 : présent 27 % du combat contre 32 % ; 1,0 ticks par seconde de présence contre 1,6 : posé sur moins de cibles à la fois (ou moins de hâte)</span></li>
+<li><strong>Kill Command (Ordre de tuer)</strong> : −5 k <span class="muted">(16 k contre 21 k)</span><div class="cause"><span class="c-freq" style="width:47.0%"></span><span class="c-coup" style="width:53.0%"></span></div><span class="faits">13,0 lancers par minute contre 13,6 · coups directs en moyenne de 31 k contre 36 k (−13 %, critique mis à part) · 35 % de tes lancers pendant Bestial Wrath (Courroux bestial) contre 55 %</span></li>
+<li><strong>Boar Charge (Boutoir)</strong> : −4 k <span class="muted">(6 k contre 10 k)</span><div class="cause"><span class="c-freq" style="width:87.5%"></span><span class="c-coup" style="width:12.5%"></span></div><span class="faits">3 coups directs par minute contre 4 · <strong>chaque Kill Command (Ordre de tuer) en déclenche pour 27 k contre 46 k</strong> (101 lancers contre 107)</span></li>
+<li><strong>Barbed Shot (Tir acéré)</strong> : −3 k <span class="muted">(17 k contre 20 k)</span><div class="cause"><span class="c-freq" style="width:4.9%"></span><span class="c-coup" style="width:95.1%"></span></div><span class="faits">ticks en moyenne de 26 k contre 30 k (−13 %, critique mis à part)</span></li>
+<li><strong>Stampede (Ruée)</strong> : −2 k <span class="muted">(3 k contre 6 k)</span><div class="cause"><span class="c-freq" style="width:100.0%"></span></div><span class="faits">13 coups directs par minute contre 23</span></li>
+<li><strong>Cobra Shot (Tir du cobra)</strong> : −2 k <span class="muted">(11 k contre 13 k)</span><div class="cause"><span class="c-freq" style="width:100.0%"></span></div><span class="faits">7,4 lancers par minute contre 12,3 · 16 % de tes lancers pendant Bestial Wrath (Courroux bestial) contre 38 %</span></li>
+<li><strong>Beast Cleave (Enchaînement bestial)</strong> : −2 k <span class="muted">(2 k contre 4 k)</span><div class="cause"><span class="c-freq" style="width:46.7%"></span><span class="c-coup" style="width:53.3%"></span></div><span class="faits">33 coups directs par minute contre 40 (familier ou invocation : moins souvent présent ou moins longtemps) · coups directs en moyenne de 4 k contre 6 k (−27 %, critique mis à part) · 7 % de ses dégâts sur les adds contre 66 %</span></li>
+</ul>
+<h4>Contexte</h4><ul><li>Bestial Wrath (Courroux bestial) actif 32 % du combat contre 44 %.</li><li>Stats (toi / lui) : Agilité 3 271 / 2 419 · Critique 1 041 / 1 069 · Hâte 408 / 614 · Maîtrise 1 468 / 1 232.</li><li>Talents : 82 % en commun. Lui seulement : Emergency Salve, Guttural Roar, Improved Feign Death, Kodo Tranquilizer, Masterful Call, Training Expert, Tranquilizing Shot. Toi seulement : Catlike Reflexes, Horsehair Tether, Misdirection, Pathfinding, Slicked Shoes, Tar Trap, Thrill of the Hunt.</li></ul>
+</details>
+<h2>Build et stats</h2>
+<p class="note">Simulations simc sur ton équipement (équipement lu dans le log (pas d&#x27;export de l&#x27;addon de cette soirée)), Patchwerk 468 s, ±0,2 % ; « pondéré » : 87 % du temps de la soirée en monocible, 13 % en multicible. Un écart de moins de 0,5 % n'est pas significatif.</p>
+<h3>Builds des références sur ton équipement</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Joueurs (nombre)</th><th>Boss</th><th class="num">1 cible</th><th class="num">3 cibles</th><th class="num">Pondéré</th><th>Talents différents des tiens</th></tr></thead>
+<tbody>
+<tr><td><strong>Ton build</strong></td><td>—</td><td class="num">178 k</td><td class="num">329 k</td><td class="num">référence</td><td></td></tr>
+<tr><td>Гаммаслон <span class="muted">(1)</span></td><td class="wrap">The Twin Fangs</td><td class="num">+0,5 %</td><td class="num">+0,5 %</td><td class="num ok">+0,5 %</td><td class="wrap">+ Camouflage, Emergency Salve, Improved Feign Death, Masterful Call, Training Expert, Tranquilizing Shot · − Aspect of the Beast, Catlike Reflexes, Horsehair Tether, Intimidation, Pathfinding, Slicked Shoes</td></tr>
+<tr><td>순펫 <span class="muted">(1)</span></td><td class="wrap">The Twin Fangs</td><td class="num">−0,1 %</td><td class="num">+0,6 %</td><td class="num muted">−0,0 %</td><td class="wrap">+ Emergency Salve, Improved Feign Death, Shell Wall, Trailblazer, Training Expert · − Aspect of the Beast, Binding Shot, Disruptive Rounds, Horsehair Tether, Intimidation, Tar Trap</td></tr>
+<tr><td>과녁 <span class="muted">(1)</span></td><td class="wrap">The Twin Fangs</td><td class="num">−0,2 %</td><td class="num">+0,7 %</td><td class="num muted">−0,1 %</td><td class="wrap">+ Emergency Salve, Guttural Roar, Improved Feign Death, Kodo Tranquilizer, Masterful Call, Training Expert, Tranquilizing Shot · − Aspect of the Beast, Catlike Reflexes, Horsehair Tether, Misdirection, Pathfinding, Slicked Shoes, Tar Trap</td></tr>
+<tr><td>Богуподобная <span class="muted">(1)</span></td><td class="wrap">The Twin Fangs</td><td class="num">−1,4 %</td><td class="num">+0,1 %</td><td class="num muted">−1,2 %</td><td class="wrap">+ Emergency Salve, Guttural Roar, Improved Feign Death, Kodo Tranquilizer, Masterful Call, Training Expert, Tranquilizing Shot · − Catlike Reflexes, Horsehair Tether, Misdirection, Pathfinding, Slicked Shoes, Tar Trap, Thrill of the Hunt</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Un build de référence fait 0,5 % de mieux</strong> : voir les priorités.</p>
+<h3>Priorités de stats par build</h3>
+<p><strong>Même priorité des stats secondaires pour tous les builds</strong> (à 5 % près) : Ton build : Hâte > Critique > Maîtrise > Polyvalence ; Build de Богуподобная : Hâte > Critique > Maîtrise > Polyvalence ; Build de 순펫 : Hâte > Critique > Maîtrise > Polyvalence. Changer de build ne change pas les objets, enchantements et gemmes à viser.</p>
+<div class="viz"><div class="legende"><span><i style="background:#2a78d6"></i>Ton build</span><span><i style="background:#eb6834"></i>Build de Богуподобная</span><span><i style="background:#1baf7a"></i>Build de 순펫</span></div><svg viewBox="0 0 960 288" role="img" aria-label="Poids des stats par build"><text class="lib" x="0" y="32">Agilité</text><rect x="110" y="8" width="780.0" height="12" rx="3" fill="#2a78d6" data-tip="Ton build&#10;Agilité : 56,0 DPS par point"></rect><text x="896.0" y="18">56,0</text><rect x="110" y="22" width="709.6" height="12" rx="3" fill="#eb6834" data-tip="Build de Богуподобная&#10;Agilité : 50,9 DPS par point"></rect><text x="825.6" y="32">50,9</text><rect x="110" y="36" width="747.1" height="12" rx="3" fill="#1baf7a" data-tip="Build de 순펫&#10;Agilité : 53,6 DPS par point"></rect><text x="863.1" y="46">53,6</text><text class="lib" x="0" y="88">Critique</text><rect x="110" y="64" width="431.7" height="12" rx="3" fill="#2a78d6" data-tip="Ton build&#10;Critique : 31,0 DPS par point"></rect><text x="547.7" y="74">31,0</text><rect x="110" y="78" width="388.8" height="12" rx="3" fill="#eb6834" data-tip="Build de Богуподобная&#10;Critique : 27,9 DPS par point"></rect><text x="504.8" y="88">27,9</text><rect x="110" y="92" width="476.2" height="12" rx="3" fill="#1baf7a" data-tip="Build de 순펫&#10;Critique : 34,2 DPS par point"></rect><text x="592.2" y="102">34,2</text><text class="lib" x="0" y="144">Hâte</text><rect x="110" y="120" width="505.2" height="12" rx="3" fill="#2a78d6" data-tip="Ton build&#10;Hâte : 36,3 DPS par point"></rect><text x="621.2" y="130">36,3</text><rect x="110" y="134" width="429.7" height="12" rx="3" fill="#eb6834" data-tip="Build de Богуподобная&#10;Hâte : 30,8 DPS par point"></rect><text x="545.7" y="144">30,8</text><rect x="110" y="148" width="478.2" height="12" rx="3" fill="#1baf7a" data-tip="Build de 순펫&#10;Hâte : 34,3 DPS par point"></rect><text x="594.2" y="158">34,3</text><text class="lib" x="0" y="200">Maîtrise</text><rect x="110" y="176" width="424.3" height="12" rx="3" fill="#2a78d6" data-tip="Ton build&#10;Maîtrise : 30,5 DPS par point"></rect><text x="540.3" y="186">30,5</text><rect x="110" y="190" width="370.8" height="12" rx="3" fill="#eb6834" data-tip="Build de Богуподобная&#10;Maîtrise : 26,6 DPS par point"></rect><text x="486.8" y="200">26,6</text><rect x="110" y="204" width="388.7" height="12" rx="3" fill="#1baf7a" data-tip="Build de 순펫&#10;Maîtrise : 27,9 DPS par point"></rect><text x="504.7" y="214">27,9</text><text class="lib" x="0" y="256">Polyvalence</text><rect x="110" y="232" width="401.6" height="12" rx="3" fill="#2a78d6" data-tip="Ton build&#10;Polyvalence : 28,8 DPS par point"></rect><text x="517.6" y="242">28,8</text><rect x="110" y="246" width="336.6" height="12" rx="3" fill="#eb6834" data-tip="Build de Богуподобная&#10;Polyvalence : 24,2 DPS par point"></rect><text x="452.6" y="256">24,2</text><rect x="110" y="260" width="356.4" height="12" rx="3" fill="#1baf7a" data-tip="Build de 순펫&#10;Polyvalence : 25,6 DPS par point"></rect><text x="472.4" y="270">25,6</text></svg></div>
+<p class="note">Valeur d'un point de stat en DPS (1 cible). Pour toi, un point de Critique vaut 1,08 point de Polyvalence.</p>
+<h3>Objets des références, simulés sur toi</h3><div class="table-wrap">
+<table>
+<thead><tr><th>Objet</th><th>À la place de</th><th class="num">1 cible</th><th class="num">3 cibles</th><th class="num">Pondéré</th></tr></thead>
+<tbody>
+<tr><td>Font of Venomous Rage</td><td>trinket1</td><td class="num">−1,6 %</td><td class="num">−2,0 %</td><td class="num muted">−1,7 %</td></tr>
+<tr><td>Font of Venomous Rage</td><td>trinket2</td><td class="num">−1,2 %</td><td class="num">−2,1 %</td><td class="num muted">−1,3 %</td></tr>
+<tr><td>Soulslither Spaulders</td><td>shoulder</td><td class="num">−0,0 %</td><td class="num">+0,5 %</td><td class="num muted">+0,0 %</td></tr>
+<tr><td>Voracious Heart of Ula&#x27;tek</td><td>trinket1</td><td class="num">−0,3 %</td><td class="num">+0,5 %</td><td class="num muted">−0,2 %</td></tr>
+<tr><td>Voracious Heart of Ula&#x27;tek</td><td>trinket2</td><td class="num">+0,1 %</td><td class="num">+0,3 %</td><td class="num muted">+0,2 %</td></tr>
+<tr><td>Zul&#x27;jin&#x27;s Guillotine Technique</td><td>trinket1</td><td class="num">+0,0 %</td><td class="num">−0,8 %</td><td class="num muted">−0,1 %</td></tr>
+<tr><td>Zul&#x27;jin&#x27;s Guillotine Technique</td><td>trinket2</td><td class="num">+0,1 %</td><td class="num">−1,0 %</td><td class="num muted">−0,0 %</td></tr>
+</tbody>
+</table>
+</div><p class="note">À l'ilvl de ta pièce actuelle, avec ton enchantement. Le plan d'amélioration complet (sac, coffre, craft, M+) arrive en V3.</p>
+<h2>Équipement</h2>
+<p class="note">Chaque objet simulé à la place de ta pièce, à 1 et 3 cibles, gain pondéré par ton temps en mono et en multicible. Ilvl simulés : 321 pour le raid héroïque et le Mythique+ (piste Héros au maximum), 331 pour l'artisanat, avec tes deux meilleures stats secondaires (Haste, Crit). Enchantement repris de ta pièce, sans gemme ajoutée. Un écart de moins de 0,5 % n'est pas significatif.</p>
+<h3>Consommables</h3><div class="table-wrap">
+<table>
+<thead><tr><th></th><th class="num">Tes kills</th><th class="num">Références</th><th class="num">Coût de l&#x27;absence (simc)</th></tr></thead>
+<tbody>
+<tr><td>Flacon</td><td class="num">1 / 1</td><td class="num">100 %</td><td class="num">−2,8 %</td></tr>
+<tr><td>Nourriture</td><td class="num">1 / 1</td><td class="num">100 %</td><td class="num">−1,6 %</td></tr>
+<tr><td>Rune d&#x27;augmentation</td><td class="num bad">0 / 1</td><td class="num">75 %</td><td class="num">−0,7 %</td></tr>
+<tr><td>Huile d&#x27;arme</td><td class="num">1 / 1</td><td class="num">100 %</td><td class="num">−0,4 %</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Enchantements et gemmes</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Emplacement</th><th>Ce que mettent les références</th><th class="num">Gain sur ta pièce</th></tr></thead>
+<tbody>
+<tr><td>Jambes</td><td>+41 Agility/Strength &amp; +115 Stamina</td><td class="num ok">+1,3 %</td></tr>
+<tr><td>Anneau 1</td><td>Enchant Ring - Eyes of the Eagle</td><td class="num ok">+1,3 %</td></tr>
+<tr><td>Torse</td><td>Enchant Chest - Mark of the Worldsoul</td><td class="num ok">+0,6 %</td></tr>
+<tr><td>Épaules</td><td>Enchant Shoulders - Amirdrassil&#x27;s Grace</td><td class="num muted">+0,1 %</td></tr>
+<tr><td>Pieds</td><td>Enchant Boots - Lynx&#x27;s Dexterity</td><td class="num muted">−0,1 %</td></tr>
+<tr><td>Tête</td><td>Enchant Helm - Empowered Rune of Avoidance</td><td class="num muted">−0,1 %</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Ton sac et ta chambre forte</h3>
+<p class="note">Sac et chambre forte non analysés : seul l'export de l'addon les contient, et il n'y en a pas pour cette soirée.</p>
+<h3>Objets à viser</h3><p class="note">98 objets de la saison que tu peux porter (boss du raid, donjons Mythique+, artisanat) ; les 15 meilleurs.</p>
+<div class="bandeau"><strong>⚠ Suggestions à vérifier sur Raidbots avant d'investir</strong> : ces gains viennent de simulations locales, avec des hypothèses simplifiées (ilvl fixé par source, pas de gemme ajoutée, enchantement repris de ta pièce). Confirme-les avec le <a href="https://www.raidbots.com/simbot/droptimizer">Droptimizer de Raidbots</a> (objets à viser par source) ou son <a href="https://www.raidbots.com/simbot/topgear">Top Gear</a> (ce que tu as déjà), à partir de ton export de l'addon SimulationCraft.</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Objet</th><th>Source</th><th>À la place de</th><th class="num">1 cible</th><th class="num">3 cibles</th><th class="num">Pondéré</th></tr></thead>
+<tbody>
+<tr><td>Aln&#x27;hara Sprigshot</td><td class="wrap">Artisanat</td><td>Arme</td><td class="num">+1,9 %</td><td class="num">+1,0 %</td><td class="num ok">+1,8 %</td></tr>
+<tr><td>Darkmoon Dominion: Blood</td><td class="wrap">Artisanat</td><td>Bijou 2</td><td class="num">+1,6 %</td><td class="num">+1,5 %</td><td class="num ok">+1,6 %</td></tr>
+<tr><td>Loa Worshiper&#x27;s Band</td><td class="wrap">Artisanat</td><td>Anneau 2</td><td class="num">+1,6 %</td><td class="num">+1,4 %</td><td class="num ok">+1,6 %</td></tr>
+<tr><td>Darkmoon Dominion: Hunt</td><td class="wrap">Artisanat</td><td>Bijou 2</td><td class="num">+1,5 %</td><td class="num">+1,5 %</td><td class="num ok">+1,5 %</td></tr>
+<tr><td>Farstrider&#x27;s Reinforced Faulds</td><td class="wrap">Artisanat</td><td>Jambes</td><td class="num">+1,3 %</td><td class="num">+1,0 %</td><td class="num ok">+1,3 %</td></tr>
+<tr><td>Darkmoon Dominion: Void</td><td class="wrap">Artisanat</td><td>Bijou 2</td><td class="num">+1,2 %</td><td class="num">+1,0 %</td><td class="num ok">+1,1 %</td></tr>
+<tr><td>Magister&#x27;s Alchemist Stone</td><td class="wrap">Artisanat</td><td>Bijou 2</td><td class="num">+1,0 %</td><td class="num">+1,0 %</td><td class="num ok">+1,0 %</td></tr>
+<tr><td>Voracious Heart of Ula&#x27;tek</td><td class="wrap">Ula&#x27;tek (The Venomous Abyss)</td><td>Bijou 2</td><td class="num">+1,0 %</td><td class="num">+0,9 %</td><td class="num ok">+1,0 %</td></tr>
+<tr><td>Cuisses of the Uncoiled Union</td><td class="wrap">The Coiled Altar (The Venomous Abyss)</td><td>Jambes</td><td class="num">+0,9 %</td><td class="num">+0,5 %</td><td class="num ok">+0,9 %</td></tr>
+<tr><td>Signet of Azerothian Blessings</td><td class="wrap">Artisanat</td><td>Anneau 2</td><td class="num">+0,8 %</td><td class="num">+0,9 %</td><td class="num ok">+0,8 %</td></tr>
+<tr><td>Ranger-General&#x27;s Grips</td><td class="wrap">Artisanat</td><td>Mains</td><td class="num">+0,8 %</td><td class="num">+1,0 %</td><td class="num ok">+0,8 %</td></tr>
+<tr><td>Aetherlume Clonkers</td><td class="wrap">Artisanat</td><td>Pieds</td><td class="num">+0,8 %</td><td class="num">−0,1 %</td><td class="num ok">+0,7 %</td></tr>
+<tr><td>Vile Vial of Volatile Venom</td><td class="wrap">Altar of Fangs (Mythique+)</td><td>Bijou 2</td><td class="num">+0,8 %</td><td class="num">+0,0 %</td><td class="num ok">+0,7 %</td></tr>
+<tr><td>Aetherlume Vision Shroud</td><td class="wrap">Artisanat</td><td>Tête</td><td class="num">+0,7 %</td><td class="num">+0,3 %</td><td class="num ok">+0,7 %</td></tr>
+<tr><td>Masterwork Sin&#x27;dorei Band</td><td class="wrap">Artisanat</td><td>Anneau 2</td><td class="num">+0,8 %</td><td class="num">−0,5 %</td><td class="num ok">+0,6 %</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Plan d'amélioration</h3>
+<p>Toutes tes pièces sont au palier maximal de leur piste : la prochaine marche passe par des objets de piste supérieure (Mythe : raid mythique, coffre hebdomadaire).</p>
+<details class="methode"><summary><h2 style="display:inline">Méthode</h2> <span class="muted">(cliquer pour déplier)</span></summary><div class="cartes"><div class="carte"><div class="lib"><strong>Combats analysés</strong></div><p>Pour chaque boss, ton meilleur kill de la soirée (centile le plus haut).</p></div><div class="carte"><div class="lib"><strong>Top 3</strong></div><p>Les trois premiers de ta spé au classement héroïque du boss, logs postérieurs au 07/10 à 06 h (maintenance du mercredi, ou dernier correctif de tes sorts intégré à simc).</p></div><div class="carte"><div class="lib"><strong>Joueur équivalent</strong></div><p>Même tranche d'ilvl, raid de taille (±5) et de durée (±25 %) proches, sans Évocateur Augmentation, 10 à 45 % de DPS en plus ; parmi les plus proches de +25 %, le plus proche en talents et bijoux. Critères élargis (tranches voisines, ±8 joueurs, ±35 %) si personne après le correctif.</p></div><div class="carte"><div class="lib"><strong>Phases</strong></div><p>Multicible quand 3 ennemis ou plus sont attaqués par le raid (seuil de la rotation simc).</p></div><div class="carte"><div class="lib"><strong>Règles de rotation</strong></div><p>Conditions de la rotation simc vérifiées lancer par lancer ; retenues seulement si tu fais nettement moins bien que les références.</p></div><div class="carte"><div class="lib"><strong>Gains</strong></div><p>Estimés à partir des écarts mesurés, puis validés en simulation pour les plus gros (fautes imitées dans simc à ton rythme et à celui des références ; gain = écart des deux).</p></div><div class="carte"><div class="lib"><strong>Limites</strong></div><p>Une référence joue un autre combat que le tien (raid, durée, adds) : un écart est une piste, pas une preuve. Avec moins de 0,3 % d'écart, une simulation n'est pas significative.</p></div></div></details>
+<div id="infobulle"></div>
+<script>
+(() => {
+  const bulle = document.getElementById("infobulle");
+  const montrer = (ev, texte) => {
+    bulle.textContent = texte; bulle.style.display = "block";
+    const x = Math.min(ev.clientX + 14, window.innerWidth - bulle.offsetWidth - 8);
+    bulle.style.left = x + "px"; bulle.style.top = (ev.clientY + 14) + "px";
+  };
+  const cacher = () => { bulle.style.display = "none"; };
+  document.querySelectorAll("[data-tip]").forEach(el => {
+    el.addEventListener("pointermove", ev => montrer(ev, el.dataset.tip));
+    el.addEventListener("pointerleave", cacher);
+  });
+  document.querySelectorAll("svg[data-courbes]").forEach(svg => {
+    const d = JSON.parse(svg.dataset.courbes), zone = svg.querySelector(".zone"), ligne = svg.querySelector(".reticule");
+    zone.addEventListener("pointermove", ev => {
+      const p = svg.createSVGPoint(); p.x = ev.clientX; p.y = ev.clientY;
+      const q = p.matrixTransform(svg.getScreenCTM().inverse());
+      const i = Math.max(0, Math.min(d.t.length - 1, Math.round((q.x - d.x0) / d.dx)));
+      ligne.setAttribute("x1", d.x0 + i * d.dx); ligne.setAttribute("x2", d.x0 + i * d.dx); ligne.style.display = "";
+      montrer(ev, d.t[i] + "\n" + d.series.map(s => (s.v[i] == null ? "—" : s.v[i]) + " lancers/min  " + s.nom).join("\n"));
+    });
+    zone.addEventListener("pointerleave", () => { ligne.style.display = "none"; cacher(); });
+  });
+})();
+</script>
+<script>
+function ouvrirAncre() {
+  const d = location.hash && document.getElementById(location.hash.slice(1));
+  if (d && d.tagName === "DETAILS") { d.open = true; d.scrollIntoView(); }
+}
+addEventListener("hashchange", ouvrirAncre); addEventListener("DOMContentLoaded", ouvrirAncre);
+</script>
+</main>
+</body>
+</html>
