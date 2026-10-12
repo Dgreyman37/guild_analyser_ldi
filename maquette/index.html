@@ -98,9 +98,19 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ia{font-size:11px;color:var(--mut);border:1px solid var(--border);border-radius:4px;padding:0 5px;margin-left:6px}
 svg text{fill:var(--mut);font-size:11px}
 .lien{color:var(--accent);text-decoration:none}.lien:hover{text-decoration:underline}
-.hero{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-.hero h1{font-size:28px;margin:2px 0}
+.hero{position:relative;overflow:hidden;border-radius:16px;padding:26px 26px 22px;margin:4px 0 18px;border:1px solid var(--border);
+ background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 60%),linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,var(--card)),var(--card))}
+.hero::after{content:"";position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;border:22px solid color-mix(in srgb,var(--accent) 12%,transparent)}
+.hero-guilde{font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hero-serveur{color:var(--mut);font-weight:600;letter-spacing:.06em}
+.hero h1{font-size:clamp(1.7rem,4.5vw,2.6rem);margin:6px 0 2px;line-height:1.1}
+.hero-date{color:var(--mut);font-size:1.02rem}
+.hero-pastilles{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.hero-tag{font-size:.85rem;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border)}
+.hero-tag.forte{color:var(--accent);border-color:var(--accent)}
+.hero-liens{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+a.bouton{text-decoration:none;font-weight:600;font-size:.88rem;padding:7px 14px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--fg)}
+a.bouton:hover{border-color:var(--accent);color:var(--accent)}
 h4{font-size:13px;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
 tr.meca>td{padding:0 0 10px;border-bottom:1px solid var(--border)}
 tr.meca details{background:var(--chip);border-radius:8px;padding:8px 12px}
@@ -148,11 +158,11 @@ tr.meca summary{cursor:pointer;font-weight:600;font-size:14px}
 <!-- ================= GUILDE ================= -->
 <section class="page" id="guilde">
   <div class="hero">
-    <div class="mut" style="font-size:13px">Les dragons immortels · Varimathras EU</div>
+    <div class="hero-guilde">Les dragons immortels <span class="hero-serveur">· Varimathras EU</span></div>
     <h1>The Venomous Abyss</h1>
-    <p class="sous">Soirée du mercredi 7 octobre 2026</p>
-    <div><span class="chip"><b>6</b> boss tués ce soir</span><span class="chip">Héroïque 7 / 10</span></div>
-    <p style="font-size:13px;margin:10px 0 0"><a href="#" class="lien">Rapport Warcraft Logs ↗</a> · <a href="#" class="lien">Page de la guilde ↗</a> · <a href="#" class="lien">Progression ↗</a></p>
+    <div class="hero-date">Soirée du mercredi 7 octobre 2026</div>
+    <div class="hero-pastilles"><span class="hero-tag">6 boss tués ce soir</span><span class="hero-tag forte">Héroïque 7 / 10</span></div>
+    <nav class="hero-liens"><a class="bouton" href="#">Rapport Warcraft Logs ↗</a><a class="bouton" href="#">Page de la guilde ↗</a><a class="bouton" href="#">Progression ↗</a></nav>
   </div>
 
   <h2 id="g-progression">Progression de la guilde</h2>
