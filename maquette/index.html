@@ -119,6 +119,13 @@ tr.meca summary{cursor:pointer;font-weight:600;font-size:14px}
 .pied{margin-top:64px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--mut)}
 .pied .methode{display:inline}.pied .methode summary{display:inline;cursor:pointer;text-decoration:underline dotted}
 .pied .methode[open] p{display:block;margin:8px 0 0}
+h2.pliable{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+h2 .chev{order:1;font-size:16px;color:var(--mut);transition:transform .2s;flex:none}
+h2.pliable:hover .chev,h2.pliable:focus-visible .chev{color:var(--accent)}
+h2.replie .chev{transform:rotate(-90deg)}
+h2.replie+.corps{display:none}
+h2.replie{margin-bottom:0}
+h2.replie+.corps+h2{margin-top:36px}
 /* fiche perso */
 .fiche{display:grid;grid-template-columns:1fr 240px 1fr;gap:14px;align-items:start}
 .slot{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 8px;margin-bottom:6px;font-size:13px}
@@ -398,6 +405,22 @@ function show(p){
 document.querySelectorAll('nav.top button').forEach(b=>b.onclick=()=>show(b.dataset.p));
 document.querySelectorAll('[data-goto]').forEach(a=>a.onclick=e=>{e.preventDefault();show(a.dataset.goto)});
 show('details');
+// sections repliables : un appui sur le titre replie ou déplie tout jusqu'au titre suivant
+document.querySelectorAll('.page h2').forEach(h=>{
+ const corps=document.createElement('div');corps.className='corps';
+ let n=h.nextElementSibling;
+ while(n&&n.tagName!=='H2'&&!n.classList.contains('pied')){const x=n.nextElementSibling;corps.appendChild(n);n=x}
+ h.after(corps);
+ h.classList.add('pliable');h.tabIndex=0;h.setAttribute('role','button');h.setAttribute('aria-expanded','true');
+ const c=document.createElement('span');c.className='chev';c.textContent='▾';c.setAttribute('aria-hidden','true');h.appendChild(c);
+ const bascule=()=>{const r=h.classList.toggle('replie');h.setAttribute('aria-expanded',String(!r))};
+ h.onclick=bascule;h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();bascule()}};
+});
+// un lien du menu de gauche rouvre la section repliée qu'il vise
+aside.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;
+ const t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;
+ const h=t.tagName==='H2'?t:t.closest('.corps')?.previousElementSibling;
+ if(h&&h.classList.contains('replie')){h.classList.remove('replie');h.setAttribute('aria-expanded','true')}});
 const th=document.getElementById('theme');
 function setTheme(v){if(v)document.documentElement.dataset.theme=v;else delete document.documentElement.dataset.theme;try{localStorage.setItem('theme',v)}catch(e){}}
 try{const v=localStorage.getItem('theme');if(v!==null)th.value=v}catch(e){}
