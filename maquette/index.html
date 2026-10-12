@@ -50,11 +50,13 @@ nav.top button.on{color:var(--fg);border-color:var(--accent)}
 .ctx{margin-left:auto;display:flex;gap:8px;font-size:13px}
 .ctx select{font:inherit;background:var(--chip);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:4px 6px}
 .wrap{display:flex;max-width:1250px;margin:0 auto}
-aside{width:220px;flex:none;position:sticky;top:52px;align-self:flex-start;padding:20px 12px;max-height:calc(100vh - 52px);overflow:auto}
-aside a{display:block;color:var(--mut);text-decoration:none;padding:4px 10px;border-left:2px solid var(--border);font-size:14px}
-aside a.sub{padding-left:22px;font-size:13px}
-aside a:hover{color:var(--fg);border-color:var(--accent)}
-aside .titre{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 8px 10px}
+aside{width:230px;flex:none;position:sticky;top:52px;align-self:flex-start;padding:24px 12px 24px 0;max-height:calc(100vh - 52px);overflow:auto}
+aside summary{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 10px 13px;cursor:pointer}
+aside nav a{display:block;color:var(--fg);text-decoration:none;padding:5px 10px;border-left:3px solid var(--border);font-size:14px}
+aside nav a.sub{padding-left:24px;font-size:13px;color:var(--mut)}
+aside summary::after{content:"▾";transform:none!important;margin-left:6px}aside details:not([open]) summary::after{content:"▸"}
+aside nav a:hover{color:var(--accent);border-left-color:var(--accent)}
+aside nav a.actif{color:var(--accent);border-left-color:var(--accent);font-weight:600;background:color-mix(in srgb,var(--accent) 8%,transparent)}
 main{flex:1;min-width:0;padding:20px 16px 80px}
 .page{display:none}.page.on{display:block}
 h1{font-size:24px;margin:0 0 4px}
@@ -166,7 +168,7 @@ table.butin-raid th.tri-asc::after{content:" ▲"}table.butin-raid th.tri-desc::
 .slot .ilvl{margin-left:auto;font-weight:700}
 .slot.manque{border-color:var(--bad)}
 .perso{background:linear-gradient(180deg,var(--chip),var(--card));border:1px solid var(--border);border-radius:10px;height:430px;display:grid;place-items:center;text-align:center;color:var(--mut)}
-@media (max-width:860px){aside{display:none}.grid2{grid-template-columns:1fr}.fiche{grid-template-columns:1fr}.perso{height:160px}.ctx{margin-left:0;padding-bottom:8px}}
+@media (max-width:860px){header{position:static}.wrap{display:block}aside{display:block;position:sticky;top:0;z-index:6;width:auto;max-height:70vh;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--border)}aside summary{margin:0;padding:6px 0}aside nav{padding-bottom:6px}.grid2{grid-template-columns:1fr}.fiche{grid-template-columns:1fr}.perso{height:160px}.ctx{margin-left:0;padding-bottom:8px}}
 </style>
 </head>
 <body>
@@ -442,11 +444,18 @@ const menus={
  coach:[["c-top","Top conseils"],["c-prog","Progression"],["c-suivi","Application des conseils"],["c-marge","Marge de progression"],["c-prio","À corriger (sans IA)"],["c-talents","Talents vs top"]],
  fiche:[["f-equip","Équipement"],["f-stats","Statistiques"],["f-talents","Talents"],["f-histo","Historique"]]
 };
-const aside=document.getElementById('menu');
+const aside=document.getElementById('menu'),petit=matchMedia('(max-width:860px)');
+// section en cours surlignée dans le menu, comme en v1
+function actif(){const liens=[...aside.querySelectorAll('nav a')];let cour=null;
+ liens.forEach(a=>{const h=document.getElementById(a.getAttribute('href').slice(1));if(h&&h.offsetParent!==null&&h.getBoundingClientRect().top<140)cour=a});
+ if(!cour)cour=liens[0];liens.forEach(a=>a.classList.toggle('actif',a===cour))}
+addEventListener('scroll',actif,{passive:true});
 function show(p){
  document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id===p));
  document.querySelectorAll('nav.top button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
- aside.innerHTML='<p class="titre">Sur cette page</p>'+menus[p].map(([id,t,s])=>`<a href="#${id}" class="${s?'sub':''}">${t}</a>`).join('');
+ aside.innerHTML='<details open><summary>Sur cette page</summary><nav>'+menus[p].map(([id,t,s])=>`<a href="#${id}" class="${s?'sub':''}">${t}</a>`).join('')+'</nav></details>';
+ if(petit.matches)aside.querySelector('details').open=false;
+ actif();
  window.scrollTo(0,0);
 }
 document.querySelectorAll('nav.top button').forEach(b=>b.onclick=()=>show(b.dataset.p));
@@ -464,7 +473,7 @@ document.querySelectorAll('.page h2').forEach(h=>{
  h.onclick=bascule;h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();bascule()}};
 });
 // un lien du menu de gauche rouvre la section repliée qu'il vise
-aside.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;
+aside.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;if(petit.matches)aside.querySelector('details').open=false;
  const t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;
  const h=t.tagName==='H2'?t:t.closest('.corps')?.previousElementSibling;
  if(h&&h.classList.contains('replie')){h.classList.remove('replie');h.setAttribute('aria-expanded','true')}});
