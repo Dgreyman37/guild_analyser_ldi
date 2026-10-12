@@ -126,6 +126,15 @@ h2.replie .chev{transform:rotate(-90deg)}
 h2.replie+.corps{display:none}
 h2.replie{margin-bottom:0}
 h2.replie+.corps+h2{margin-top:36px}
+/* flèche des volets dépliables, comme les titres de section */
+details>summary{list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"▾";color:var(--mut);font-size:14px;font-weight:400;transition:transform .2s;display:inline-block;margin-left:8px}
+.boss>summary::after,tr.meca summary::after{margin-left:auto}
+.boss>summary:has(.r)::after{margin-left:10px}
+tr.meca summary{display:flex;align-items:center;gap:8px}
+details:not([open])>summary::after{transform:rotate(-90deg)}
+details>summary:hover::after{color:var(--accent)}
 /* fiche perso */
 .fiche{display:grid;grid-template-columns:1fr 240px 1fr;gap:14px;align-items:start}
 .slot{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 8px;margin-bottom:6px;font-size:13px}
