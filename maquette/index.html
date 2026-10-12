@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette navigation</title>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--fg:#1d1d1f;--mut:#6b6b70;--border:#e1e0dc;--accent:#b8860b;--accent2:#e3b341;--on:#000;--good:#2f7d4f;--bad:#b23b2e;--warn:#c27c0e;--chip:#efede8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--card:#1f2125;--fg:#e8e6e1;--mut:#9a9a9f;--border:#33363c;--accent:#e3b341;--accent2:#f0d27a;--good:#5cc28a;--bad:#ef7a6c;--warn:#e7a849;--chip:#2a2c31}}
+
+:root[data-theme=neon]{--bg:#0f0b1e;--card:#1a1530;--fg:#f1ecff;--mut:#a59cc9;--border:#2e2650;--accent:#ff3cac;--accent2:#2bd2ff;--on:#fff;--good:#3cf7a0;--bad:#ff5a7a;--warn:#ffd23f;--chip:#261f45}
+:root[data-theme=fleau]{--bg:#0c130f;--card:#142019;--fg:#e6f2e8;--mut:#8fa898;--border:#25392c;--accent:#7dff4f;--accent2:#b36bff;--on:#0c130f;--good:#7dff4f;--bad:#ff6b8b;--warn:#ffc94d;--chip:#1c2b21}
+:root[data-theme=sunset]{--bg:#fff5ee;--card:#fff;--fg:#2a1a2e;--mut:#7a6475;--border:#f3dccf;--accent:#ff4e6a;--accent2:#8e54e9;--on:#fff;--good:#14a06c;--bad:#d6334a;--warn:#e08a00;--chip:#fde8e0}
+:root[data-theme=lagon]{--bg:#f2fbfa;--card:#fff;--fg:#10262b;--mut:#5b7479;--border:#d3ebe8;--accent:#00b3a4;--accent2:#ff8a3d;--on:#fff;--good:#0f9a6a;--bad:#e0464f;--warn:#e48a00;--chip:#e2f5f3}
+:root[data-theme=synthwave]{--bg:#1a1033;--card:#251845;--fg:#fbeaff;--mut:#b09ccc;--border:#3a2a63;--accent:#ff2a6d;--accent2:#05d9e8;--on:#fff;--chip:#2a1d52}
+:root[data-theme=cyber]{--bg:#0a0a12;--card:#14141f;--fg:#f4f4f8;--mut:#9a9ab0;--border:#2a2a3d;--accent:#fcee0a;--accent2:#00f0ff;--on:#000;--chip:#1e1e2e}
+:root[data-theme=braise]{--bg:#170d09;--card:#231510;--fg:#fbeee6;--mut:#b49a8c;--border:#3d2619;--accent:#ff5a1f;--accent2:#ffd60a;--on:#000;--chip:#2e1c14}
+:root[data-theme=givre]{--bg:#0a1220;--card:#121c30;--fg:#e9f3ff;--mut:#93a6c4;--border:#24324d;--accent:#6fd6ff;--accent2:#b9a3ff;--on:#000;--chip:#1b2740}
+:root[data-theme=aurore]{--bg:#0b0b18;--card:#151527;--fg:#eefcf6;--mut:#9aa3b8;--border:#2a2a45;--accent:#00f5a0;--accent2:#d61fff;--on:#000;--chip:#1f1f36}
+:root[data-theme=sang]{--bg:#140a0c;--card:#211215;--fg:#fbe9ec;--mut:#b3959a;--border:#3d2025;--accent:#ff1744;--accent2:#ff9100;--on:#fff;--chip:#2c1719}
+:root[data-theme=abysse]{--bg:#061821;--card:#0d2430;--fg:#e3f8ff;--mut:#8fb0bd;--border:#1b3a48;--accent:#00b4ff;--accent2:#00ffb2;--on:#000;--chip:#12303d}
+:root[data-theme=bonbon]{--bg:#fff4fb;--card:#fff;--fg:#2d1630;--mut:#7d6380;--border:#f6d9ee;--accent:#ff4fb6;--accent2:#7873f5;--on:#fff;--chip:#fde4f3}
+:root[data-theme=agrume]{--bg:#fffaf0;--card:#fff;--fg:#2a2214;--mut:#7a6c55;--border:#f1e3c8;--accent:#ff8c00;--accent2:#13b8a6;--on:#fff;--chip:#fdf0d8}
+:root[data-theme=pop]{--bg:#fffbe9;--card:#fff;--fg:#1f1a10;--mut:#6e6550;--border:#efe5bf;--accent:#ff2e63;--accent2:#3a86ff;--on:#fff;--chip:#fbf3d0}
+:root[data-theme=framboise]{--bg:#f6fbf8;--card:#fff;--fg:#18261f;--mut:#5f7268;--border:#d6eadf;--accent:#e63973;--accent2:#18a957;--on:#fff;--chip:#e5f3eb}
+:root[data-theme=synthwave],:root[data-theme=cyber],:root[data-theme=braise],:root[data-theme=givre],:root[data-theme=aurore],:root[data-theme=sang],:root[data-theme=abysse]{--good:#4ade80;--bad:#ff6b81;--warn:#fbbf24}
+:root[data-theme=bonbon],:root[data-theme=agrume],:root[data-theme=pop],:root[data-theme=framboise]{--good:#15803d;--bad:#c81e3a;--warn:#b45309}
+:root[data-theme=encre]{--bg:#fafafa;--card:#fff;--fg:#1b1b1d;--mut:#6b6b70;--border:#e4e4e7;--accent:#27272a;--accent2:#71717a;--on:#fff;--chip:#f0f0f2}
+:root[data-theme=ardoise]{--bg:#f5f6f8;--card:#fff;--fg:#1d232b;--mut:#64707d;--border:#dfe3e8;--accent:#3b5b7a;--accent2:#6d8aa6;--on:#fff;--chip:#eceff3}
+:root[data-theme=marine]{--bg:#f6f8fb;--card:#fff;--fg:#14213a;--mut:#5d6b82;--border:#dbe2ec;--accent:#1f3a5f;--accent2:#4a73a1;--on:#fff;--chip:#e8edf4}
+:root[data-theme=sauge]{--bg:#f4f6f2;--card:#fff;--fg:#1d261f;--mut:#66756a;--border:#dce4dc;--accent:#4f7461;--accent2:#86a392;--on:#fff;--chip:#e8eee7}
+:root[data-theme=lin]{--bg:#f8f5f0;--card:#fffdf9;--fg:#2a241d;--mut:#7a6e60;--border:#e8e0d4;--accent:#9a5f3a;--accent2:#c08b62;--on:#fff;--chip:#f0e9df}
+:root[data-theme=graphite]{--bg:#17191c;--card:#202328;--fg:#e6e8eb;--mut:#959ba5;--border:#30343b;--accent:#a9b2bf;--accent2:#d0d6de;--on:#111;--chip:#282c32}
+:root[data-theme=nuit]{--bg:#0f1520;--card:#172030;--fg:#e3e9f2;--mut:#8d99ad;--border:#263247;--accent:#7ea6d8;--accent2:#a9c3e3;--on:#0f1520;--chip:#1e293b}
+:root[data-theme=mousse]{--bg:#131915;--card:#1b231e;--fg:#e4ece6;--mut:#8e9e93;--border:#2a362e;--accent:#8fb39a;--accent2:#b8d0bd;--on:#131915;--chip:#222c25}
+:root[data-theme=bronze]{--bg:#191613;--card:#221e1a;--fg:#efe8df;--mut:#a39a8e;--border:#3a332b;--accent:#c49a6c;--accent2:#dcbc94;--on:#191613;--chip:#2b2621}
+:root[data-theme=prune]{--bg:#17131a;--card:#211b25;--fg:#eee6f2;--mut:#a095a8;--border:#352c3b;--accent:#a88bbd;--accent2:#c8b4d6;--on:#17131a;--chip:#2a2230}
+:root[data-theme=encre],:root[data-theme=ardoise],:root[data-theme=marine],:root[data-theme=sauge],:root[data-theme=lin]{--good:#2f6f4a;--bad:#a4372c;--warn:#9a6a12}
+:root[data-theme=graphite],:root[data-theme=nuit],:root[data-theme=mousse],:root[data-theme=bronze],:root[data-theme=prune]{--good:#7fb894;--bad:#e08a80;--warn:#d9b26a}
+.grad{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.maquette{background:linear-gradient(90deg,var(--accent),var(--accent2));color:var(--on);text-align:center;font-size:12px;padding:3px}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 16px;flex-wrap:wrap}
+header .logo{font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;padding:12px 0}
+nav.top{display:flex;gap:2px;flex-wrap:wrap}
+nav.top button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mut);font:inherit;font-weight:600;padding:12px 12px 9px;cursor:pointer;letter-spacing:.03em}
+nav.top button.on{color:var(--fg);border-color:var(--accent)}
+.ctx{margin-left:auto;display:flex;gap:8px;font-size:13px}
+.ctx select{font:inherit;background:var(--chip);color:var(--fg);border:1px solid var(--border);border-radius:6px;padding:4px 6px}
+.wrap{display:flex;max-width:1250px;margin:0 auto}
+aside{width:220px;flex:none;position:sticky;top:52px;align-self:flex-start;padding:20px 12px;max-height:calc(100vh - 52px);overflow:auto}
+aside a{display:block;color:var(--mut);text-decoration:none;padding:4px 10px;border-left:2px solid var(--border);font-size:14px}
+aside a.sub{padding-left:22px;font-size:13px}
+aside a:hover{color:var(--fg);border-color:var(--accent)}
+aside .titre{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:0 0 8px 10px}
+main{flex:1;min-width:0;padding:20px 16px 80px}
+.page{display:none}.page.on{display:block}
+h1{font-size:24px;margin:0 0 4px}
+.page{counter-reset:sec}
+h2{counter-increment:sec;font-size:26px;font-weight:800;letter-spacing:-.01em;margin:72px 0 22px;display:flex;align-items:center;gap:12px;scroll-margin-top:64px}
+h2::before{content:counter(sec,decimal-leading-zero);font-size:13px;font-weight:700;color:var(--on);background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:6px;padding:3px 8px;letter-spacing:.05em}
+h2::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),transparent);opacity:.6}
+h3{font-size:15px;font-weight:600;margin:34px 0 12px;padding-left:10px;border-left:3px solid var(--accent2);scroll-margin-top:64px}
+.card h3,.grid2 h3{border:0;padding:0}
+.sous{color:var(--mut);margin:0 0 8px}
+h1+.sous+h2{margin-top:32px}
+.grid2 .card{margin:0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin:14px 0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.kpi .v{font-size:24px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--mut)}
+.kpi .d{font-size:12px}
+.good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}.mut{color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
+th{font-size:12px;color:var(--mut);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto}
+.bar{height:8px;background:var(--chip);border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.chip{display:inline-block;background:var(--chip);border-radius:20px;padding:1px 9px;font-size:12px;margin:2px 4px 2px 0}
+.chip.up{color:var(--good)}.chip.down{color:var(--bad)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0}
+.note{border-left:3px dashed var(--accent);padding:8px 12px;color:var(--mut);font-size:13px;margin:16px 0;background:var(--card)}
+.boss summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.boss summary::-webkit-details-marker{display:none}
+.boss summary .r{margin-left:auto;font-weight:400;font-size:13px}
+.conseil{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start}
+.conseil .num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--on);font-weight:700;display:grid;place-items:center}
+.statut{font-size:12px;border-radius:6px;padding:2px 8px;white-space:nowrap}
+.s-ok{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.s-prog{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.s-ko{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.ia{font-size:11px;color:var(--mut);border:1px solid var(--border);border-radius:4px;padding:0 5px;margin-left:6px}
+svg text{fill:var(--mut);font-size:11px}
+/* fiche perso */
+.fiche{display:grid;grid-template-columns:1fr 240px 1fr;gap:14px;align-items:start}
+.slot{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 8px;margin-bottom:6px;font-size:13px}
+.slot .ico{width:32px;height:32px;border-radius:5px;background:var(--chip);flex:none;border:2px solid #a335ee}
+.slot .ilvl{margin-left:auto;font-weight:700}
+.slot.manque{border-color:var(--bad)}
+.perso{background:linear-gradient(180deg,var(--chip),var(--card));border:1px solid var(--border);border-radius:10px;height:430px;display:grid;place-items:center;text-align:center;color:var(--mut)}
+@media (max-width:860px){aside{display:none}.grid2{grid-template-columns:1fr}.fiche{grid-template-columns:1fr}.perso{height:160px}.ctx{margin-left:0;padding-bottom:8px}}
+</style>
+</head>
+<body>
+<div class="maquette">MAQUETTE — mise en page seulement, chiffres en partie fictifs (soirée du 08/10, Ragnarorc)</div>
+<header>
+  <span class="logo">LDI · Analyse</span>
+  <nav class="top">
+    <button data-p="guilde">GUILDE</button>
+    <button data-p="details" class="on">DÉTAILS PERSO</button>
+    <button data-p="coach">MON COACH</button>
+    <button data-p="fiche">FICHE PERSO</button>
+  </nav>
+  <div class="ctx">
+    <select id="theme" title="Couleurs">
+      <optgroup label="Sombres"><option value="neon" selected>Néon</option><option value="fleau">Fléau</option><option value="synthwave">Synthwave</option><option value="cyber">Cyberpunk</option><option value="braise">Braise</option><option value="givre">Givre (Liche)</option><option value="aurore">Aurore boréale</option><option value="sang">Sang</option><option value="abysse">Abysse</option></optgroup>
+      <optgroup label="Clairs"><option value="sunset">Coucher de soleil</option><option value="lagon">Lagon</option><option value="bonbon">Bonbon</option><option value="agrume">Agrume</option><option value="pop">Pop</option><option value="framboise">Framboise-menthe</option></optgroup>
+      <optgroup label="Sobres clairs"><option value="">Or (actuel)</option><option value="encre">Encre</option><option value="ardoise">Ardoise</option><option value="marine">Marine</option><option value="sauge">Sauge</option><option value="lin">Lin</option></optgroup>
+      <optgroup label="Sobres sombres"><option value="graphite">Graphite</option><option value="nuit">Nuit bleue</option><option value="mousse">Mousse</option><option value="bronze">Bronze</option><option value="prune">Prune</option></optgroup>
+    </select>
+    <select title="Joueur"><option>Ragnarorc</option><option>Mécafree</option><option>Jalyne</option></select>
+    <select title="Soirée"><option>08/10 — The Twin Fangs</option><option>07/10</option><option>01/10</option></select>
+  </div>
+</header>
+
+<div class="wrap">
+<aside id="menu"></aside>
+<main>
+
+<!-- ================= GUILDE ================= -->
+<section class="page" id="guilde">
+  <h1>Soirée du 08/10</h1>
+  <p class="sous">Résumé pour toute la guilde (= l'actuel <code>raid_&lt;code&gt;.html</code>, inchangé sur le fond)</p>
+  <h2 id="g-bilan">Bilan</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">1 / 2</div><div class="l">boss tués</div></div>
+    <div class="kpi"><div class="v">14</div><div class="l">essais</div></div>
+    <div class="kpi"><div class="v">3 h 05</div><div class="l">temps de raid</div></div>
+    <div class="kpi"><div class="v">52</div><div class="l">centile moyen de la guilde</div></div>
+  </div>
+  <h2 id="g-classement">Classement de la guilde</h2>
+  <div class="card mut">Tableau des joueurs (centile, DPS/HPS, Wipefest, morts) → chaque nom ouvre DÉTAILS PERSO de ce joueur.</div>
+  <h2 id="g-forts">Points forts</h2><div class="card mut">…</div>
+  <h2 id="g-boss">Essais boss par boss</h2><div class="card mut">…</div>
+  <h2 id="g-meca">Mécaniques qui tuent</h2><div class="card mut">…</div>
+  <h2 id="g-roles">Tanks et soigneurs</h2><div class="card mut">…</div>
+  <h2 id="g-butin">Le butin</h2><div class="card mut">…</div>
+</section>
+
+<!-- ================= DÉTAILS ================= -->
+<section class="page on" id="details">
+  <h1>Ragnarorc — soirée du 08/10</h1>
+  <p class="sous">Chevalier de la mort Impie · niveau d'analyse : avec équipement</p>
+
+  <h2 id="d-resume">Résumé de la soirée</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">59</div><div class="l">centile moyen</div><div class="d good">▲ +7 depuis le 07/10</div></div>
+    <div class="kpi"><div class="v">62 %</div><div class="l">du potentiel simulé</div><div class="d mut">186 k / 299 k</div></div>
+    <div class="kpi"><div class="v">81</div><div class="l">score Wipefest moyen</div><div class="d mut">8ᵉ du raid</div></div>
+    <div class="kpi"><div class="v">4</div><div class="l">morts</div><div class="d bad">sur 14 essais</div></div>
+    <div class="kpi"><div class="v">2 h 41</div><div class="l">en combat</div><div class="d mut">sur 3 h 05 de raid</div></div>
+    <div class="kpi"><div class="v">1</div><div class="l">objet obtenu</div><div class="d mut">Spellbreaker's Bracers</div></div>
+  </div>
+  <div class="note">Remarque : la « moyenne DPS » sur la soirée est remplacée par le centile moyen et le % du potentiel (des boss différents ne se comparent pas au DPS brut). Le DPS brut reste dans « Boss par boss ».</div>
+
+  <h2 id="d-rotation">Rotation</h2>
+  <h3 id="d-patch">Changements de sorts (3 dernières semaines)</h3>
+  <div class="card">
+    <span class="chip up">▲ Putrefy +8 % dégâts · 30/09</span>
+    <span class="chip down">▼ Dread Plague −5 % · 30/09</span>
+    <span class="chip up">▲ Army of the Dead durée +2 s · 23/09</span>
+    <div class="mut" style="font-size:12px;margin-top:6px">Source : historique git de <code>simc/SpellDataDump/</code></div>
+  </div>
+  <h3 id="d-simvs">Rotation simulée vs ma rotation</h3>
+  <div class="card tbl"><table>
+    <tr><th>Sort</th><th class="n">Moi (lancers/min)</th><th class="n">Simc</th><th class="n">Écart</th></tr>
+    <tr><td>Scourge Strike</td><td class="n">11,2</td><td class="n">12,6</td><td class="n bad">−11 %</td></tr>
+    <tr><td>Outbreak</td><td class="n">3,1</td><td class="n">1,2</td><td class="n bad">+158 %</td></tr>
+    <tr><td>Death Coil</td><td class="n">9,8</td><td class="n">9,5</td><td class="n">+3 %</td></tr>
+    <tr><td>Dark Transformation</td><td class="n">1,0</td><td class="n">1,1</td><td class="n warn">−1 lancer</td></tr>
+  </table></div>
+  <h3 id="d-actif">Temps actif / inactif</h3>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>Actif 91,4 %</span><span class="mut">Références 94,0 %</span></div>
+    <div class="bar"><i style="width:91.4%"></i></div>
+  </div>
+
+  <h2 id="d-equip">Équipement</h2>
+  <div class="grid2">
+    <div class="card"><h3 id="d-ench" style="margin-top:0">Enchantements et gemmes manquants</h3>
+      <div class="bad">✗ Cape : pas d'enchantement</div><div class="bad">✗ Anneau 2 : châsse vide</div><div class="good">✓ Le reste est complet</div></div>
+    <div class="card"><h3 id="d-prio" style="margin-top:0">Pièces à améliorer en priorité</h3>
+      <ol style="margin:0;padding-left:18px"><li>Spellbreaker's Girdle (artisanat) <b>+0,96 %</b></li><li>Loa Worshiper's Band <b>+0,91 %</b></li><li>Cou Myth 2/6 → 6/6 <b>+0,56 %</b></li></ol></div>
+  </div>
+  <h3 id="d-ideal">Équipement idéal vs le mien</h3>
+  <div class="card tbl"><table>
+    <tr><th>Emplacement</th><th>Le mien</th><th>Idéal (références)</th><th class="n">Gain</th></tr>
+    <tr><td>Arme</td><td>Blood Knight's Warblade</td><td>Zul'jin's Guillotine Technique</td><td class="n">+0,94 %</td></tr>
+    <tr><td>Ceinture</td><td>Baleful Grave-Knight's Girdle</td><td>Spellbreaker's Girdle</td><td class="n">+0,96 %</td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="card"><h3 id="d-poids" style="margin-top:0">Poids des stats</h3>
+      <table><tr><td>Force</td><td class="n">1,00</td></tr><tr><td>Maîtrise</td><td class="n">0,71</td></tr><tr><td>Hâte</td><td class="n">0,64</td></tr><tr><td>Critique</td><td class="n">0,58</td></tr><tr><td>Polyvalence</td><td class="n">0,52</td></tr></table></div>
+    <div class="card"><h3 id="d-potion" style="margin-top:0">Choix de la potion</h3>
+      <table><tr><td>Potion de puissance</td><td class="n good">référence</td></tr><tr><td>Potion de stat secondaire</td><td class="n">−1,2 %</td></tr></table></div>
+  </div>
+  <h3 id="d-simdps">DPS réel vs DPS simulé</h3>
+  <div class="card"><div style="font-size:13px">Réel 186 k</div><div class="bar"><i style="width:62%"></i></div><div style="font-size:13px;margin-top:6px">Simulé 299 k</div><div class="bar"><i style="width:100%;background:var(--mut)"></i></div></div>
+  <h3 id="d-conso">Coût d'un oubli de consommable</h3>
+  <div class="card tbl"><table>
+    <tr><th>Consommable</th><th>Ce soir</th><th class="n">Coût si oublié</th></tr>
+    <tr><td>Flacon</td><td class="good">✓</td><td class="n">−5,8 %</td></tr>
+    <tr><td>Potion (×2)</td><td class="good">✓</td><td class="n">−2,9 %</td></tr>
+    <tr><td>Huile d'arme</td><td class="good">✓</td><td class="n">−1,9 %</td></tr>
+    <tr><td>Nourriture</td><td class="good">✓</td><td class="n">−1,4 %</td></tr>
+    <tr><td>Rune d'augmentation</td><td class="bad">✗</td><td class="n bad">−0,85 %</td></tr>
+  </table></div>
+
+  <h2 id="d-boss">Raid boss par boss</h2>
+  <details class="card boss" open><summary>The Twin Fangs <span class="chip">Mythique</span><span class="r">kill · centile 59 · Wipefest 84</span></summary>
+    <div class="kpis" style="margin-top:12px">
+      <div class="kpi"><div class="v">186 k</div><div class="l">DPS</div><div class="d mut">réf. équivalent 233 k (+25 %)</div></div>
+      <div class="kpi"><div class="v">2</div><div class="l">morts</div></div>
+      <div class="kpi"><div class="v">6</div><div class="l">wipes</div></div>
+      <div class="kpi"><div class="v">84</div><div class="l">Wipefest</div></div>
+    </div>
+    <p><b>Consommables :</b> flacon ✓ · potion 2/2 ✓ · huile ✓ · rune ✗</p>
+    <p><b>Butin :</b> Spellbreaker's Bracers</p>
+    <p><b>Ma rotation vs la référence :</b> <span class="mut">frise côte à côte (l'actuelle « duo »)</span></p>
+    <p class="mut" style="font-size:13px">Liens : Warcraft Logs · Wipefest · WoWAnalyzer</p>
+  </details>
+  <details class="card boss"><summary>Second boss <span class="chip">Mythique</span><span class="r">8 wipes · meilleur essai 34 %</span></summary><p class="mut">…</p></details>
+</section>
+
+<!-- ================= COACH ================= -->
+<section class="page" id="coach">
+  <h1>Mon coach</h1>
+  <p class="sous">Suivi de Ragnarorc sur toutes les soirées</p>
+
+  <h2 id="c-top">Top conseils <span class="ia">rédigé par l'IA</span></h2>
+  <div class="card conseil"><div class="num">1</div><div><b>Garder Outbreak pour le début du combat (et quand Dread Plague est tombée)</b><div class="mut" style="font-size:13px">Objectif au prochain raid : 1,5 Outbreak/min au plus (3,1 ce soir)</div></div><span class="statut s-ko">toujours là</span></div>
+  <div class="card conseil"><div class="num">2</div><div><b>Ne pas décaler Dark Transformation</b><div class="mut" style="font-size:13px">Objectif : 0 lancer de retard de plus de 5 s</div></div><span class="statut s-prog">en progrès</span></div>
+  <div class="card conseil"><div class="num">3</div><div><b>Rune d'augmentation</b><div class="mut" style="font-size:13px">Objectif : présente sur chaque essai</div></div><span class="statut s-ok">nouveau</span></div>
+
+  <h2 id="c-prog">Progression de raid en raid</h2>
+  <div class="card">
+    <svg viewBox="0 0 600 160" width="100%" role="img" aria-label="Centile par soirée">
+      <line x1="40" y1="140" x2="590" y2="140" stroke="var(--border)"/>
+      <polyline fill="none" stroke="var(--accent)" stroke-width="2.5" points="60,100 190,92 320,80 450,74 580,60"/>
+      <g fill="var(--accent)"><circle cx="60" cy="100" r="4"/><circle cx="190" cy="92" r="4"/><circle cx="320" cy="80" r="4"/><circle cx="450" cy="74" r="4"/><circle cx="580" cy="60" r="4"/></g>
+      <text x="60" y="155" text-anchor="middle">17/09</text><text x="190" y="155" text-anchor="middle">24/09</text><text x="320" y="155" text-anchor="middle">01/10</text><text x="450" y="155" text-anchor="middle">07/10</text><text x="580" y="155" text-anchor="middle">08/10</text>
+      <text x="580" y="50" text-anchor="middle">59</text><text x="60" y="90" text-anchor="middle">41</text>
+    </svg>
+    <div class="mut" style="font-size:12px">Centile moyen (courbe) — à basculer aussi en % du potentiel, Wipefest, morts</div>
+  </div>
+
+  <h2 id="c-suivi">Application des conseils</h2>
+  <div class="card tbl"><table>
+    <tr><th>Conseil</th><th>Donné le</th><th class="n">Mesure avant</th><th class="n">Ce soir</th><th>Statut</th></tr>
+    <tr><td>Outbreak en trop</td><td>07/10</td><td class="n">3,4/min</td><td class="n">3,1/min</td><td><span class="statut s-ko">toujours là</span></td></tr>
+    <tr><td>Bijou dans Dark Transformation</td><td>01/10</td><td class="n">3/5</td><td class="n">5/5</td><td><span class="statut s-ok">corrigé</span></td></tr>
+    <tr><td>Puissance runique au plafond</td><td>01/10</td><td class="n">4,1 %</td><td class="n">0,9 %</td><td><span class="statut s-prog">en progrès</span></td></tr>
+  </table></div>
+
+  <h2 id="c-marge">Marge de progression</h2>
+  <div class="card">
+    <table>
+      <tr><td>Rotation</td><td style="width:50%"><div class="bar"><i style="width:68%"></i></div></td><td class="n">+3,4 %</td></tr>
+      <tr><td>Équipement</td><td><div class="bar"><i style="width:55%"></i></div></td><td class="n">+2,8 %</td></tr>
+      <tr><td>Consommables</td><td><div class="bar"><i style="width:17%"></i></div></td><td class="n">+0,85 %</td></tr>
+    </table>
+  </div>
+
+  <h2 id="c-prio">À corriger en priorité <span class="ia">calculé, sans IA</span></h2>
+  <div class="card tbl"><table>
+    <tr><th>Constat</th><th>Thème</th><th class="n">Gain simulé</th></tr>
+    <tr><td>Outbreak relancé alors que Dread Plague est active</td><td>rotation</td><td class="n">+3,08 %</td></tr>
+    <tr><td>À viser : Spellbreaker's Girdle</td><td>équipement</td><td class="n">+0,96 %</td></tr>
+    <tr><td>Consommable manquant : Rune d'augmentation</td><td>consommables</td><td class="n">+0,85 %</td></tr>
+    <tr><td>Dark Transformation : 1 lancer de moins</td><td>cooldowns</td><td class="n">+0,34 %</td></tr>
+  </table></div>
+
+  <h2 id="c-talents">Arbre de talents vs le top mondial</h2>
+  <div class="card tbl"><table>
+    <tr><th>Boss tué</th><th>Mon arbre héroïque</th><th>Top 10 mondial</th><th>Talents qui diffèrent</th></tr>
+    <tr><td>The Twin Fangs</td><td>Rider of the Apocalypse</td><td>Rider 80 % · San'layn 20 %</td><td><span class="chip">+ Ebon Fever</span><span class="chip">− Unholy Aura</span></td></tr>
+  </table></div>
+</section>
+
+<!-- ================= FICHE ================= -->
+<section class="page" id="fiche">
+  <h1>Ragnarorc</h1>
+  <p class="sous">Orc · Chevalier de la mort Impie · Nerzhul (EU) · niveau d'objet 327 · <a href="#" style="color:var(--accent)">Voir l'Armurerie officielle ↗</a></p>
+  <div class="note">Mise en page propre au site (pas une copie de l'Armurerie Blizzard) ; données tirées du dernier export de l'addon.</div>
+  <h2 id="f-equip">Équipement</h2>
+  <div class="fiche">
+    <div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Casque<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Cou (Myth 2/6)<span class="ilvl">320</span></div>
+      <div class="slot"><span class="ico"></span>Épaules<span class="ilvl">327</span></div>
+      <div class="slot manque"><span class="ico"></span>Speakeasy Shroud <span class="bad">· sans ench.</span><span class="ilvl">324</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Breastplate<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Spellbreaker's Bracers<span class="ilvl">327</span></div>
+    </div>
+    <div class="perso">silhouette / portrait<br>du personnage<br><span style="font-size:12px">(image libre ou icône de classe)</span></div>
+    <div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Deathgrips<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Girdle<span class="ilvl">327</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Greaves<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Spellbreaker's March<span class="ilvl">324</span></div>
+      <div class="slot"><span class="ico"></span>Band of the Amani Warlord<span class="ilvl">327</span></div>
+      <div class="slot manque"><span class="ico"></span>Ouroboric Signet <span class="bad">· châsse vide</span><span class="ilvl">327</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div><h2 id="f-stats">Statistiques</h2><div class="card"><table><tr><td>Force</td><td class="n">78 410</td></tr><tr><td>Critique</td><td class="n">22 %</td></tr><tr><td>Hâte</td><td class="n">19 %</td></tr><tr><td>Maîtrise</td><td class="n">61 %</td></tr><tr><td>Polyvalence</td><td class="n">6 %</td></tr></table></div></div>
+    <div><h2 id="f-talents">Talents</h2><div class="card mut">Arbre de classe, de spé et héroïque (rendu en grille, ou lien vers Wowhead avec la chaîne d'import)</div></div>
+  </div>
+  <h2 id="f-histo">Historique</h2>
+  <div class="card mut">Niveau d'objet et centile soirée après soirée · objets obtenus</div>
+</section>
+
+</main>
+</div>
+
+<script>
+const menus={
+ guilde:[["g-bilan","Bilan"],["g-classement","Classement"],["g-forts","Points forts"],["g-boss","Boss par boss"],["g-meca","Mécaniques"],["g-roles","Tanks et soigneurs"],["g-butin","Butin"]],
+ details:[["d-resume","Résumé"],["d-rotation","Rotation"],["d-patch","Changements de sorts",1],["d-simvs","Simulé vs moi",1],["d-actif","Temps actif",1],["d-equip","Équipement"],["d-ench","Enchantements",1],["d-prio","Priorités",1],["d-ideal","Équipement idéal",1],["d-poids","Poids des stats",1],["d-potion","Potion",1],["d-simdps","DPS vs simulé",1],["d-conso","Consommables",1],["d-boss","Boss par boss"]],
+ coach:[["c-top","Top conseils"],["c-prog","Progression"],["c-suivi","Application des conseils"],["c-marge","Marge de progression"],["c-prio","À corriger (sans IA)"],["c-talents","Talents vs top"]],
+ fiche:[["f-equip","Équipement"],["f-stats","Statistiques"],["f-talents","Talents"],["f-histo","Historique"]]
+};
+const aside=document.getElementById('menu');
+function show(p){
+ document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.id===p));
+ document.querySelectorAll('nav.top button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+ aside.innerHTML='<p class="titre">Sur cette page</p>'+menus[p].map(([id,t,s])=>`<a href="#${id}" class="${s?'sub':''}">${t}</a>`).join('');
+ window.scrollTo(0,0);
+}
+document.querySelectorAll('nav.top button').forEach(b=>b.onclick=()=>show(b.dataset.p));
+show('details');
+const th=document.getElementById('theme');
+function setTheme(v){if(v)document.documentElement.dataset.theme=v;else delete document.documentElement.dataset.theme;try{localStorage.setItem('theme',v)}catch(e){}}
+try{const v=localStorage.getItem('theme');if(v!==null)th.value=v}catch(e){}
+setTheme(th.value);th.onchange=()=>setTheme(th.value);
+</script>
+</body>
+</html>
