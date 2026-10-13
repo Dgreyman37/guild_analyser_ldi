@@ -203,7 +203,7 @@ figure.essais .pt{stroke:var(--card);stroke-width:2;cursor:help}figure.essais .p
     <button data-p="guilde">GUILDE</button>
     <button data-p="details" class="on">DÉTAILS PERSO</button>
     <button data-p="coach">MON COACH</button>
-    <button data-p="fiche">FICHE PERSO</button>
+    
   </nav>
   <div class="ctx">
     <select id="theme" title="Couleurs">
@@ -305,6 +305,35 @@ figure.essais .pt{stroke:var(--card);stroke-width:2;cursor:help}figure.essais .p
     <div class="kpi"><div class="v">2 h 41</div><div class="l">en combat</div><div class="d mut">sur 3 h 05 de raid</div></div>
     <div class="kpi"><div class="v">1</div><div class="l">objet obtenu</div><div class="d mut">Spellbreaker's Bracers</div></div>
   </div>
+
+  <h2 id="d-fiche">Fiche personnelle</h2>
+  <p class="mut" data-aide="Mise en page propre au site (pas une copie de l'Armurerie Blizzard) ; données tirées du dernier export de l'addon." tabindex="0" style="cursor:help;margin-top:0">Orc · Chevalier de la mort Impie · Nerzhul (EU) · niveau d'objet 327 · <a href="https://worldofwarcraft.blizzard.com/fr-fr/character/eu/nerzhul/ragnarorc" target="_blank" rel="noopener" style="color:var(--accent)">Voir l'Armurerie officielle ↗</a></p>
+  <h3 id="d-fequip">Équipement porté</h3>
+  <div class="fiche">
+    <div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Casque<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Cou (Myth 2/6)<span class="ilvl">320</span></div>
+      <div class="slot"><span class="ico"></span>Épaules<span class="ilvl">327</span></div>
+      <div class="slot manque"><span class="ico"></span>Speakeasy Shroud <span class="bad">· sans ench.</span><span class="ilvl">324</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Breastplate<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Spellbreaker's Bracers<span class="ilvl">327</span></div>
+    </div>
+    <div class="perso">silhouette / portrait<br>du personnage<br><span style="font-size:12px">(image libre ou icône de classe)</span></div>
+    <div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Deathgrips<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Girdle<span class="ilvl">327</span></div>
+      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Greaves<span class="ilvl">330</span></div>
+      <div class="slot"><span class="ico"></span>Spellbreaker's March<span class="ilvl">324</span></div>
+      <div class="slot"><span class="ico"></span>Band of the Amani Warlord<span class="ilvl">327</span></div>
+      <div class="slot manque"><span class="ico"></span>Ouroboric Signet <span class="bad">· châsse vide</span><span class="ilvl">327</span></div>
+    </div>
+  </div>
+  <h3 id="d-fstats">Statistiques</h3>
+  <div class="card"><table><tr><td>Force</td><td class="n">78 410</td></tr><tr><td>Critique</td><td class="n">22 %</td></tr><tr><td>Hâte</td><td class="n">19 %</td></tr><tr><td>Maîtrise</td><td class="n">61 %</td></tr><tr><td>Polyvalence</td><td class="n">6 %</td></tr></table></div>
+  <h3 id="d-ftalents">Talents</h3>
+  <div class="card mut">Arbre de classe, de spé et héroïque (rendu en grille, ou lien vers Wowhead avec la chaîne d'import)</div>
+  <h3 id="d-fhisto">Historique</h3>
+  <div class="card mut">Niveau d'objet et centile soirée après soirée · objets obtenus</div>
 
   <h2 id="d-rotation">Rotation</h2>
   <h3 id="d-patch">Changements de sorts (3 dernières semaines)</h3>
@@ -433,47 +462,14 @@ figure.essais .pt{stroke:var(--card);stroke-width:2;cursor:help}figure.essais .p
 </section>
 
 <!-- ================= FICHE ================= -->
-<section class="page" id="fiche">
-  <h1>Ragnarorc</h1>
-  <p class="sous">Orc · Chevalier de la mort Impie · Nerzhul (EU) · niveau d'objet 327 · <a href="#" style="color:var(--accent)">Voir l'Armurerie officielle ↗</a></p>
-  <div class="note">Mise en page propre au site (pas une copie de l'Armurerie Blizzard) ; données tirées du dernier export de l'addon.</div>
-  <h2 id="f-equip">Équipement</h2>
-  <div class="fiche">
-    <div>
-      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Casque<span class="ilvl">330</span></div>
-      <div class="slot"><span class="ico"></span>Cou (Myth 2/6)<span class="ilvl">320</span></div>
-      <div class="slot"><span class="ico"></span>Épaules<span class="ilvl">327</span></div>
-      <div class="slot manque"><span class="ico"></span>Speakeasy Shroud <span class="bad">· sans ench.</span><span class="ilvl">324</span></div>
-      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Breastplate<span class="ilvl">330</span></div>
-      <div class="slot"><span class="ico"></span>Spellbreaker's Bracers<span class="ilvl">327</span></div>
-    </div>
-    <div class="perso">silhouette / portrait<br>du personnage<br><span style="font-size:12px">(image libre ou icône de classe)</span></div>
-    <div>
-      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Deathgrips<span class="ilvl">330</span></div>
-      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Girdle<span class="ilvl">327</span></div>
-      <div class="slot"><span class="ico"></span>Baleful Grave-Knight's Greaves<span class="ilvl">330</span></div>
-      <div class="slot"><span class="ico"></span>Spellbreaker's March<span class="ilvl">324</span></div>
-      <div class="slot"><span class="ico"></span>Band of the Amani Warlord<span class="ilvl">327</span></div>
-      <div class="slot manque"><span class="ico"></span>Ouroboric Signet <span class="bad">· châsse vide</span><span class="ilvl">327</span></div>
-    </div>
-  </div>
-  <div class="grid2">
-    <div><h2 id="f-stats">Statistiques</h2><div class="card"><table><tr><td>Force</td><td class="n">78 410</td></tr><tr><td>Critique</td><td class="n">22 %</td></tr><tr><td>Hâte</td><td class="n">19 %</td></tr><tr><td>Maîtrise</td><td class="n">61 %</td></tr><tr><td>Polyvalence</td><td class="n">6 %</td></tr></table></div></div>
-    <div><h2 id="f-talents">Talents</h2><div class="card mut">Arbre de classe, de spé et héroïque (rendu en grille, ou lien vers Wowhead avec la chaîne d'import)</div></div>
-  </div>
-  <h2 id="f-histo">Historique</h2>
-  <div class="card mut">Niveau d'objet et centile soirée après soirée · objets obtenus</div>
-</section>
-
 </main>
 </div>
 
 <script>
 const menus={
  guilde:[["g-progression","Progression"],["g-ilvl","ilvl moyen",1],["g-diff","Par difficulté",1],["g-soiree","Le bilan du raid"],["g-boss","Le tableau de chasse"],["g-essais","Pull après pull"],["g-raid","Les membres du raid"],["g-butin","Le butin"],["g-butin-soir","Les heureux élus",1],["g-butin-raid","Le registre du butin",1]],
- details:[["d-resume","Résumé"],["d-rotation","Rotation"],["d-patch","Changements de sorts",1],["d-simvs","Simulé vs moi",1],["d-actif","Temps actif",1],["d-equip","Équipement"],["d-ench","Enchantements",1],["d-prio","Priorités",1],["d-ideal","Équipement idéal",1],["d-poids","Poids des stats",1],["d-potion","Potion",1],["d-simdps","Réel vs simulé",1],["d-conso","Consommables",1],["d-boss","Boss par boss"]],
- coach:[["c-top","Top conseils"],["c-prog","Progression"],["c-suivi","Application des conseils"],["c-marge","Marge de progression"],["c-prio","À corriger (sans IA)"],["c-talents","Talents vs top"]],
- fiche:[["f-equip","Équipement"],["f-stats","Statistiques"],["f-talents","Talents"],["f-histo","Historique"]]
+ details:[["d-resume","Résumé"],["d-fiche","Fiche personnelle"],["d-fequip","Équipement porté",1],["d-fstats","Statistiques",1],["d-ftalents","Talents",1],["d-fhisto","Historique",1],["d-rotation","Rotation"],["d-patch","Changements de sorts",1],["d-simvs","Simulé vs moi",1],["d-actif","Temps actif",1],["d-equip","Équipement"],["d-ench","Enchantements",1],["d-prio","Priorités",1],["d-ideal","Équipement idéal",1],["d-poids","Poids des stats",1],["d-potion","Potion",1],["d-simdps","Réel vs simulé",1],["d-conso","Consommables",1],["d-boss","Boss par boss"]],
+ coach:[["c-top","Top conseils"],["c-prog","Progression"],["c-suivi","Application des conseils"],["c-marge","Marge de progression"],["c-prio","À corriger (sans IA)"],["c-talents","Talents vs top"]]
 };
 const aside=document.getElementById('menu'),petit=matchMedia('(max-width:860px)');
 // section en cours surlignée dans le menu, comme en v1
